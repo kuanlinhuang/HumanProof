@@ -1,0 +1,132 @@
+{
+  "Brain": {
+    "organ": "Brain",
+    "cell_types": [
+      "Neurons",
+      "Glutamatergic neurons",
+      "GABAergic neurons",
+      "Interneurons",
+      "Oligodendrocytes",
+      "Astrocytes",
+      "Microglia"
+    ]
+  },
+  "Heart": {
+    "organ": "Heart",
+    "cell_types": [
+      "Cardiomyocytes",
+      "Cardiac endothelial",
+      "Cardiac fibroblasts"
+    ]
+  },
+  "Liver": {
+    "organ": "Liver",
+    "cell_types": [
+      "Hepatocytes",
+      "Kupffer cells",
+      "Hepatic stellate cells",
+      "Cholangiocytes"
+    ]
+  },
+  "Lung": {
+    "organ": "Lung",
+    "cell_types": [
+      "Type I pneumocytes",
+      "Type II pneumocytes",
+      "Alveolar macrophages",
+      "Ciliated epithelium",
+      "Club cells",
+      "Lung macrophages"
+    ]
+  },
+  "Kidney": {
+    "organ": "Kidney",
+    "cell_types": [
+      "Proximal tubule",
+      "Tubular cells",
+      "Podocytes",
+      "Collecting duct",
+      "Distal tubule"
+    ]
+  },
+  "Intestine": {
+    "organ": "Intestine",
+    "cell_types": [
+      "Enterocytes",
+      "Goblet cells",
+      "Enteroendocrine cells",
+      "Intestinal stem cells"
+    ]
+  },
+  "Bone marrow": {
+    "organ": "Bone marrow",
+    "cell_types": [
+      "HSCs",
+      "Erythroblasts",
+      "Erythrocytes",
+      "Megakaryocytes",
+      "Neutrophils",
+      "Plasma cells"
+    ]
+  },
+  "Lymph node": {
+    "organ": "Lymph node",
+    "cell_types": [
+      "T cells",
+      "CD4+ T cells",
+      "CD8+ T cells",
+      "Regulatory T cells",
+      "B cells",
+      "NK cells",
+      "Dendritic cells"
+    ]
+  },
+  "Spleen": {
+    "organ": "Spleen",
+    "cell_types": [
+      "Macrophages",
+      "Monocytes"
+    ]
+  },
+  "Skin": {
+    "organ": "Skin",
+    "cell_types": [
+      "Keratinocytes",
+      "Melanocytes",
+      "Skin fibroblasts",
+      "Dermal fibroblasts"
+    ]
+  },
+  "Pancreas": {
+    "organ": "Pancreas",
+    "cell_types": [
+      "Beta cells",
+      "Alpha cells",
+      "Acinar cells",
+      "Ductal cells"
+    ]
+  },
+  "Muscle": {
+    "organ": "Muscle",
+    "cell_types": [
+      "Skeletal muscle fibers",
+      "Skeletal muscle cells",
+      "Satellite cells"
+    ]
+  },
+  "Adrenal": {
+    "organ": "Adrenal",
+    "cell_types": [
+      "Adrenal cortical cells",
+      "Chromaffin cells"
+    ]
+  },
+  "Breast": {
+    "organ": "Breast",
+    "cell_types": [
+      "Mammary epithelial",
+      "Luminal epithelial",
+      "Mammary fibroblasts"
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+
+# Database
+*.db
+
+# Environment (keep .env.example committed; ignore all real env files)
+.env
+.env.local
+.env.production
+.env.staging
+.env.*.local
+docker/.env
+
+# Build
+.next/
+out/
+dist/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data (large binary files — transfer separately via rsync/S3)
+data/reference/
+*.h5ad
+*.pkl
+*.pickle
+
+# Large data files
+data/cellxgene/*.csv
+data/safety_model_output/**/*.json
+data/safety_model_output/*.json
+data/safety_model_output/*.csv
+data/safety_model_output/*.npy
