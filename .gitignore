@@ -33,6 +33,10 @@ data/reference/
 *.h5ad
 *.pkl
 *.pickle
+*.csv.gz
+*.db-shm
+*.db-wal
+*.db
 
 # Large data files
 data/cellxgene/*.csv
