@@ -166,8 +166,10 @@ Railway auto-injects `DATABASE_URL` (postgres:// format) into all services.
 Create `backend/Procfile`:
 
 ```
-web: uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 2
+web: uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 1
 ```
+
+Use `--workers 1` when running with SQLite (single-file DB) to avoid startup race conditions.
 
 ### 4.4 Environment variables
 

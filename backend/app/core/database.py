@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.exc import OperationalError
 
 from app.config import settings
 
@@ -18,4 +19,10 @@ async def get_db() -> AsyncSession:
 
 async def init_db():
     async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+        try:
+            await conn.run_sync(Base.metadata.create_all)
+        except OperationalError as exc:
+            error_text = str(exc).lower()
+            if "already exists" in error_text and "sqlite" in settings.database_url:
+                return
+            raise
