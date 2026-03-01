@@ -718,7 +718,17 @@ def create_database(db_path: str) -> None:
 
 
 if __name__ == "__main__":
-    db_path = Path(__file__).parent / "humanproof.db"
+    db_url = os.getenv("HUMANPROOF_DATABASE_URL", "")
+    if db_url.startswith("sqlite") and ":///" in db_url:
+        sqlite_path = db_url.split(":///", 1)[1]
+        db_path = Path(sqlite_path)
+        if not db_path.is_absolute():
+            db_path = (Path(__file__).parent / db_path).resolve()
+    else:
+        db_path = Path(__file__).parent / "humanproof.db"
+
+    db_path.parent.mkdir(parents=True, exist_ok=True)
+
     if db_path.exists():
         db_path.unlink()
     for wal in [db_path.with_suffix(".db-wal"), db_path.with_suffix(".db-shm")]:

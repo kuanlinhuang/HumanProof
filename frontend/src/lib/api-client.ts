@@ -1,4 +1,5 @@
-const API_BASE = "";
+const rawApiBase = process.env.NEXT_PUBLIC_API_URL?.trim() ?? "";
+const API_BASE = rawApiBase.replace(/\/$/, "");
 
 async function fetchApi<T>(path: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, options);
