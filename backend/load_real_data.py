@@ -13,6 +13,7 @@ Run from the backend/ directory:
 
 import json
 import math
+import os
 import pickle
 import sqlite3
 import sys
@@ -21,7 +22,25 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-DATA_DIR = Path(__file__).parent.parent / "data"
+def _resolve_data_dir() -> Path:
+    env_data_dir = os.getenv("HUMANPROOF_DATA_DIR")
+    if env_data_dir:
+        return Path(env_data_dir)
+
+    script_dir = Path(__file__).resolve().parent
+    candidates = [
+        script_dir.parent / "data",  # local: <repo>/backend/load_real_data.py -> <repo>/data
+        script_dir / "data",         # Railway: /app/load_real_data.py -> /app/data
+        Path("/app/data"),
+    ]
+    for path in candidates:
+        if path.exists():
+            return path
+
+    return script_dir.parent / "data"
+
+
+DATA_DIR = _resolve_data_dir()
 CELLXGENE_DIR = DATA_DIR / "cellxgene"
 PLOF_PICKLE = DATA_DIR / "genebass_pLoF_filtered.pkl"
 LOEUF_FILE = DATA_DIR / "LOEUF_scores.csv.gz"

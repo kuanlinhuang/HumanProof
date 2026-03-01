@@ -193,7 +193,7 @@ The SHAP JSON (`gene_shap_dr.json`, 455 MB), pLoF pickle, and CellxGene CSVs mus
 accessible at runtime but are too large to commit to git.
 
 1. In Railway → **Add Volume** → mount at `/app/data`.
-2. Upload files via the Railway CLI:
+2. Sync files from Zenodo (recommended):
 
 ```bash
 # Install Railway CLI
@@ -201,20 +201,26 @@ npm install -g @railway/cli
 railway login
 railway link   # link to your project
 
-# Upload data files (run from repo root)
-railway volume cp data/safety_model_output/dr/gene_shap_dr.json /app/data/safety_model_output/dr/gene_shap_dr.json
-railway volume cp data/genebass_pLoF_filtered.pkl /app/data/genebass_pLoF_filtered.pkl
-railway volume cp data/LOEUF_scores.csv.gz /app/data/LOEUF_scores.csv.gz
+# Canonical sync workflow (run from repo root)
+# Defaults to Zenodo record 18827087 and verifies expected file sizes
+./sync_data_from_urls.sh
 ```
 
-Alternatively, use `rsync` into the Railway shell if the CLI volume commands are unavailable.
+Optional: pin a specific dataset record/version:
+
+```bash
+ZENODO_RECORD_ID=18827087 ./sync_data_from_urls.sh
+```
+
+> Note: `railway ssh` stdin streaming and `railway volume cp` may be unreliable or unavailable
+> depending on Railway CLI version. `sync_data_from_urls.sh` is the supported method.
 
 ### 4.6 Seed the database
 
-After the first deploy, open a Railway shell:
+After the first deploy, seed from inside the running service:
 
 ```bash
-railway run python load_real_data.py
+railway ssh "cd /app && /app/.venv/bin/python load_real_data.py"
 ```
 
 This populates PostgreSQL from the uploaded data files (~19K genes, takes several minutes).
@@ -447,14 +453,12 @@ The backend reads from three large data sources at startup or on first query:
 # Link your local repo to Railway project
 railway login && railway link
 
-# Upload data files to the mounted volume (/app/data)
-railway volume cp data/safety_model_output/dr/gene_shap_dr.json \
-  /app/data/safety_model_output/dr/gene_shap_dr.json
-railway volume cp data/genebass_pLoF_filtered.pkl /app/data/
-railway volume cp data/LOEUF_scores.csv.gz /app/data/
+# Sync all required files to mounted volume (/app/data)
+# Uses Zenodo API content URLs and verifies expected byte sizes
+./sync_data_from_urls.sh
 
 # Run DB seeding
-railway run python load_real_data.py
+railway ssh "cd /app && /app/.venv/bin/python load_real_data.py"
 ```
 
 ### 7.2 Google Cloud Run: upload to Cloud Storage
@@ -479,7 +483,7 @@ gcloud run jobs execute humanproof-seed --region us-central1 --wait
 railway run pg_dump $DATABASE_URL > backup_$(date +%Y%m%d).sql
 
 # 3. Re-seed
-railway run python load_real_data.py
+railway ssh "cd /app && /app/.venv/bin/python load_real_data.py"
 
 # 4. Verify
 curl https://<backend-url>/api/v1/targets/search?q=BRCA1
@@ -564,7 +568,7 @@ The app creates tables automatically via `init_db()`. If tables are missing, tri
 
 ```bash
 # Railway
-railway run python load_real_data.py
+railway ssh "cd /app && /app/.venv/bin/python load_real_data.py"
 
 # Cloud Run
 gcloud run jobs execute humanproof-seed --region us-central1 --wait
@@ -886,8 +890,8 @@ Local dev:
 Vercel + Railway:
   Frontend →  vercel.com/new → root: frontend/ → set NEXT_PUBLIC_API_URL
   Backend  →  railway.app → root: backend/ → add Postgres plugin → set env vars
-  Data     →  railway volume cp data/ /app/data/
-  Seed     →  railway run python load_real_data.py
+  Data     →  ./sync_data_from_urls.sh
+  Seed     →  railway ssh "cd /app && /app/.venv/bin/python load_real_data.py"
 
 Vercel + Google Cloud Run:
   Frontend →  vercel.com/new → root: frontend/ → set NEXT_PUBLIC_API_URL
