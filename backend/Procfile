@@ -1,1 +1,1 @@
-web: rm -f /app/data/safety_model_output/dr/gene_shap_features.db /app/data/safety_model_output/dr/gene_shap_features.db-journal && uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 1
+web: uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 1
