@@ -48,14 +48,9 @@ def _load_shap_metadata() -> dict:
     if not _SHAP_JSON_PATH.exists():
         return {}
 
-    # Pick a writable location for the feature DB
-    db_path = str(_SHAP_JSON_PATH.parent / "gene_shap_features.db")
-    try:
-        conn = sqlite3.connect(db_path)
-        conn.execute("SELECT 1")
-    except Exception:
-        db_path = os.path.join(tempfile.gettempdir(), "gene_shap_features.db")
-        conn = sqlite3.connect(db_path)
+    # Write to /tmp — ephemeral, doesn't consume the persistent volume
+    db_path = os.path.join(tempfile.gettempdir(), "gene_shap_features.db")
+    conn = sqlite3.connect(db_path)
 
     conn.execute("DROP TABLE IF EXISTS shap_features")
     conn.execute(
