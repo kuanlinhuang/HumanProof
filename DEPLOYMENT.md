@@ -501,11 +501,13 @@ curl https://<backend-url>/health
 # → {"status": "ok", "app": "HumanProof", "database": "ok"}
 ```
 
-The `database` field reports live connectivity to Postgres. If it shows
-`"error: <ExceptionType>"` the app is running but cannot reach the database —
-check that the Postgres service is online and `HUMANPROOF_DATABASE_URL` (or the
-injected `DATABASE_URL`) is correct. The endpoint intentionally stays `200` even
-when the DB is down so a transient blip doesn't fail the Railway healthcheck.
+The `database` field reports live connectivity to the configured database
+(Postgres in production, SQLite in local/dev). If it shows
+`"error: <ExceptionType>"` the app is running but cannot reach that database —
+in production, check that the Postgres service is online and
+`HUMANPROOF_DATABASE_URL` (or the injected `DATABASE_URL`) is correct. The
+endpoint intentionally stays `200` even when the DB is down so a transient blip
+doesn't fail the Railway healthcheck.
 
 Hitting the base URL `/` returns a small JSON banner (app name, status, and links
 to `/docs`, `/health`, `/api/v1`) rather than a bare 404.

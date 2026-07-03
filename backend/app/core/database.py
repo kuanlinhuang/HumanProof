@@ -8,7 +8,23 @@ from app.config import settings
 
 logger = logging.getLogger(__name__)
 
-engine = create_async_engine(settings.database_url, echo=False)
+# Bound connection establishment so an unreachable / blackholed / DNS-stalled
+# Postgres fails fast instead of hanging startup (``init_db``) and ``/health``.
+# asyncpg's ``timeout`` covers DNS resolution + TCP connect; it's asyncpg-only,
+# so scope it to that driver (SQLite would misinterpret it as a busy timeout).
+CONNECT_TIMEOUT_SECONDS = 10.0
+_connect_args = (
+    {"timeout": CONNECT_TIMEOUT_SECONDS} if "asyncpg" in settings.database_url else {}
+)
+
+engine = create_async_engine(
+    settings.database_url,
+    echo=False,
+    # Recycle connections dropped while the DB was offline (e.g. a Postgres
+    # restart) instead of handing out dead ones on the next request.
+    pool_pre_ping=True,
+    connect_args=_connect_args,
+)
 async_session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 
