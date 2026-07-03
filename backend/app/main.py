@@ -2,9 +2,10 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
 
 from app.config import settings
-from app.core.database import init_db
+from app.core.database import engine, init_db
 from app.api.v1.router import api_router
 
 
@@ -32,6 +33,31 @@ app.add_middleware(
 app.include_router(api_router)
 
 
+@app.get("/")
+async def root():
+    """Landing route so hitting the base URL returns useful info instead of a
+    bare 404 ``{"detail":"Not Found"}``."""
+    return {
+        "app": settings.app_name,
+        "status": "ok",
+        "message": f"{settings.app_name} API is running.",
+        "docs": "/docs",
+        "health": "/health",
+        "api_base": "/api/v1",
+    }
+
+
 @app.get("/health")
 async def health_check():
-    return {"status": "ok", "app": settings.app_name}
+    # Liveness stays 200 as long as the process is up (so a DB blip doesn't
+    # fail Railway's healthcheck), but we report DB reachability so operators
+    # can tell at a glance whether Postgres is actually connected. Only the
+    # exception type is surfaced — never the message — to avoid leaking the
+    # connection string / credentials.
+    database = "ok"
+    try:
+        async with engine.connect() as conn:
+            await conn.execute(text("SELECT 1"))
+    except Exception as exc:  # noqa: BLE001 - reported for ops debugging
+        database = f"error: {type(exc).__name__}"
+    return {"status": "ok", "app": settings.app_name, "database": database}

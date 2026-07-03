@@ -181,13 +181,12 @@ HUMANPROOF_CORS_ORIGINS=["https://humanproof.vercel.app"]
 HUMANPROOF_DATA_DIR=/app/data
 ```
 
-> **asyncpg URL:** Railway's `DATABASE_URL` uses `postgres://` scheme. FastAPI needs
-> `postgresql+asyncpg://`. Add a startup shim or set a separate variable:
->
-> ```bash
-> # In Railway Variables panel, add:
-> HUMANPROOF_DATABASE_URL=postgresql+asyncpg://${{Postgres.PGUSER}}:${{Postgres.PGPASSWORD}}@${{Postgres.PGHOST}}:${{Postgres.PGPORT}}/${{Postgres.PGDATABASE}}
-> ```
+> **asyncpg URL (handled automatically):** Railway's `DATABASE_URL` uses the `postgres://`
+> scheme, but SQLAlchemy's async engine needs `postgresql+asyncpg://`. The app now normalizes
+> this at startup (`app/config.py`), so `${{Postgres.DATABASE_URL}}` above works as-is — no
+> manual shim required. If `HUMANPROOF_DATABASE_URL` is not set, the app also falls back to a
+> bare `DATABASE_URL` (which Railway injects automatically), so attaching Postgres connects the
+> app instead of silently using the local SQLite default.
 
 ### 4.5 Persistent volume for data files
 
@@ -499,8 +498,17 @@ curl https://<backend-url>/api/v1/targets/search?q=BRCA1
 
 ```bash
 curl https://<backend-url>/health
-# → {"status": "ok", "app": "HumanProof"}
+# → {"status": "ok", "app": "HumanProof", "database": "ok"}
 ```
+
+The `database` field reports live connectivity to Postgres. If it shows
+`"error: <ExceptionType>"` the app is running but cannot reach the database —
+check that the Postgres service is online and `HUMANPROOF_DATABASE_URL` (or the
+injected `DATABASE_URL`) is correct. The endpoint intentionally stays `200` even
+when the DB is down so a transient blip doesn't fail the Railway healthcheck.
+
+Hitting the base URL `/` returns a small JSON banner (app name, status, and links
+to `/docs`, `/health`, `/api/v1`) rather than a bare 404.
 
 ### 8.2 Uptime monitoring
 
@@ -551,13 +559,31 @@ Note: the value must be a valid JSON array string.
 2. Confirm `NEXT_PUBLIC_API_URL` is set correctly in the Vercel environment variables
 3. Check browser console — the URL may still point to `localhost:8000` if the env var was missing at build time (trigger a redeploy after adding it)
 
+### `{"detail":"Not Found"}` at the backend URL
+
+This is FastAPI's normal 404 for a path with no route — it means the backend **is
+up and serving**, you're just hitting a path that doesn't exist. The base URL `/`
+now returns a JSON banner, but any other unknown path still 404s by design. Verify
+the service with:
+
+```bash
+curl https://<backend-url>/health   # → {"status":"ok",...,"database":"ok"}
+curl https://<backend-url>/          # → {"app":"HumanProof","status":"ok",...}
+```
+
+If you previously saw the backend fail entirely while Postgres was offline, that was
+a startup crash (a 502 / "Application failed to respond"), not this 404. Startup now
+retries the DB connection with backoff and boots even if Postgres is unreachable, so
+`/health` stays reachable and reports the DB state — trigger a redeploy/restart if the
+service is still on a pre-fix crashed deploy.
+
 ### asyncpg URL format error (Railway)
 
-Railway's `${{Postgres.DATABASE_URL}}` uses `postgres://` scheme; FastAPI requires `postgresql+asyncpg://`. Set the variable manually using the individual Postgres credential references:
-
-```
-HUMANPROOF_DATABASE_URL=postgresql+asyncpg://${{Postgres.PGUSER}}:${{Postgres.PGPASSWORD}}@${{Postgres.PGHOST}}:${{Postgres.PGPORT}}/${{Postgres.PGDATABASE}}
-```
+The app normalizes `postgres://` / `postgresql://` to `postgresql+asyncpg://`
+automatically (`app/config.py`), so `HUMANPROOF_DATABASE_URL=${{Postgres.DATABASE_URL}}`
+works directly. If you still hit a driver error, confirm the value resolves to a real
+Postgres URL (not an empty string) and that `asyncpg` is installed (it's in
+`requirements.txt`).
 
 ### SHAP JSON not loading (gene risk scores missing)
 
