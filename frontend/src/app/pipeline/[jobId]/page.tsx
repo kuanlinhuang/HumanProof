@@ -302,7 +302,7 @@ function BindingTable({ profiles }: { profiles: BindingProfileSummary[] }) {
               </td>
               <td className="py-2 px-2 text-center">{p.n_tissues_expressed}</td>
               <td className="py-2 px-2 text-center">{p.n_plof_associations}</td>
-              <td className="py-2 px-2 text-xs text-muted-foreground">{p.top_tissue || "—"}</td>
+              <td className="py-2 px-2 text-xs text-muted-foreground">{p.top_tissue || "n/a"}</td>
               <td className="py-2 px-2">
                 <Link
                   href={`/targets/${p.gene_symbol}`}

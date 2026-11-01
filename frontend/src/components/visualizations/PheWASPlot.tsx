@@ -218,7 +218,7 @@ export function PheWASPlot({
       .attr("font-size", "15px")
       .attr("font-weight", "600")
       .attr("fill", "currentColor")
-      .text(`${geneSymbol} — PheWAS: pLOF Phenotype Associations`);
+      .text(`${geneSymbol} PheWAS: pLOF Phenotype Associations`);
 
     // Legend (two columns for many categories)
     const legendX = width - margin.right + 15;

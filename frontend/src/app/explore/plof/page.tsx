@@ -214,10 +214,10 @@ export default function PLOFExplorerPage() {
                           </span>
                         </td>
                         <td className="p-2 text-right font-mono text-xs">
-                          {a.p_value_burden != null ? a.p_value_burden.toExponential(2) : "—"}
+                          {a.p_value_burden != null ? a.p_value_burden.toExponential(2) : "n/a"}
                         </td>
                         <td className="p-2 text-right font-mono text-xs">
-                          {a.p_value_skat != null ? a.p_value_skat.toExponential(2) : "—"}
+                          {a.p_value_skat != null ? a.p_value_skat.toExponential(2) : "n/a"}
                         </td>
                         <td className="p-2 text-right font-mono text-xs">
                           {a.beta.toFixed(4)}

@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 interface RiskGaugeProps {
   riskClass: string;
-  /** HumanProof ML safety score (0–1). Drives needle position when provided. */
+  /** HumanProof ML safety score (0 to 1). Drives needle position when provided. */
   humanproofScore?: number | null;
   /** "A" = all-labeled (extrapolated), "B" = drugged-only (recommended) */
   humanproofModel?: "A" | "B" | null;
@@ -23,7 +23,7 @@ const RISK_CONFIG: Record<
 export function RiskGauge({ riskClass, humanproofScore, humanproofModel }: RiskGaugeProps) {
   const config = RISK_CONFIG[riskClass] || RISK_CONFIG.moderate;
 
-  // Needle position: use humanproofScore (0–1) mapped to 0–100% of gauge arc
+  // Needle position: use humanproofScore (0 to 1) mapped to 0 to 100% of gauge arc
   // Fall back to categorical midpoints if no score available
   const FALLBACK_PCT: Record<string, number> = {
     low: 15, moderate: 45, high: 72, critical: 92,
@@ -75,7 +75,7 @@ export function RiskGauge({ riskClass, humanproofScore, humanproofModel }: RiskG
           <p className="text-[10px] text-muted-foreground mt-0.5">
             HumanProof score
             {humanproofModel === "A" && (
-              <span className="ml-1 text-amber-500" title="Extrapolated — gene not yet in clinical trials">
+              <span className="ml-1 text-amber-500" title="Extrapolated: gene not yet in clinical trials">
                 (extrapolated)
               </span>
             )}

@@ -165,7 +165,7 @@ export function SequenceInput({ onSubmit, onValidate, isSubmitting }: SequenceIn
               </div>
               <div>
                 <label className="text-sm font-medium text-muted-foreground mb-1 block">
-                  Light Chain (VL-CL) <span className="text-muted-foreground/60">— optional</span>
+                  Light Chain (VL-CL) <span className="text-muted-foreground/60">(optional)</span>
                 </label>
                 <textarea
                   className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm font-mono ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"

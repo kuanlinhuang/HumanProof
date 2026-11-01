@@ -11,13 +11,13 @@ interface ShapWaterfallProps {
 
 // Colour palette matching safety_model_viz.py
 const GROUP_COLORS: Record<string, string> = {
-  ot:         "#2980B9",   // blue  — Open Targets features
-  genetics:   "#E67E22",   // orange — pLoF / LOEUF
-  expression: "#8E44AD",   // purple — cell-type expression
+  ot:         "#2980B9",   // blue: Open Targets features
+  genetics:   "#E67E22",   // orange: pLoF / LOEUF
+  expression: "#8E44AD",   // purple: cell-type expression
 };
 
-const POSITIVE_COLOR = "#C0392B";   // red   — increases risk
-const NEGATIVE_COLOR = "#27AE60";   // green — decreases risk
+const POSITIVE_COLOR = "#C0392B";   // red: increases risk
+const NEGATIVE_COLOR = "#27AE60";   // green: decreases risk
 
 function formatFeatureValue(val: number | null, name: string): string {
   if (val === null) return "N/A";
@@ -204,7 +204,7 @@ export function ShapWaterfall({ data, nTop = 20 }: ShapWaterfallProps) {
       .attr("font-size", 13)
       .attr("fill", "#777")
       .text(
-        `Model ${data.model === "B" ? "B — drugged-only (OOF, recommended)" : "A — all-labeled (extrapolated)"}` +
+        `Model ${data.model === "B" ? "B: drugged-only (OOF, recommended)" : "A: all-labeled (extrapolated)"}` +
         `  ·  base value: ${data.base_value.toFixed(3)}`
       );
 

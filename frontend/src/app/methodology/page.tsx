@@ -17,7 +17,7 @@ const STEPS = [
     badge: "Selection Bias Correction",
     badgeColor: "bg-blue-100 text-blue-800",
     content: [
-      "Genes that reach clinical trials are not a random sample of the genome — they are enriched for druggable, well-studied proteins. This selection bias would corrupt a naive outcome model trained only on drugged genes.",
+      "Genes that reach clinical trials are not a random sample of the genome: they are enriched for druggable, well-studied proteins. This selection bias would corrupt a naive outcome model trained only on drugged genes.",
       "We fit an XGBoost classifier to predict P(S=1|X), the probability that a gene becomes a drug target, using all 17,745 protein-coding genes in the database. Training uses 5-fold cross-fitting so every gene's propensity score is estimated by a model that never saw it.",
       "Stabilized inverse propensity weights  w_i = π̄ / π̂(X_i)  (clipped at 10×) are assigned to each drugged gene. These weights up-weight surprising drug targets and down-weight expected ones, rebalancing the training distribution toward the target population.",
     ],
@@ -26,12 +26,12 @@ const STEPS = [
   },
   {
     number: 2,
-    title: "PU Prior  P(Y = 1)  — Fixed at 0.40",
+    title: "PU Prior  P(Y = 1): Fixed at 0.40",
     badge: "Positive-Unlabeled Learning",
     badgeColor: "bg-green-100 text-green-800",
     content: [
-      "Safety events are only observable for genes that have been tested as drug targets. The remaining ~16,000 undrugged genes are unlabeled — not confirmed safe. Standard binary classifiers treat unlabeled samples as negatives, introducing a systematic false-negative bias.",
-      "We fix π_p = P(Y=1) = 0.40. The Elkan–Noto method (a naive positive-vs-all classifier trained via 5-fold CV) estimates the labeling frequency c = E[f(X)|Y=1] and returns π_p = P(labeled) / c ≈ 9%, but this underestimates the true genome-wide safety liability prevalence because many safety-relevant genes have simply not been studied yet.",
+      "Safety events are only observable for genes that have been tested as drug targets. The remaining ~16,000 undrugged genes are unlabeled: not confirmed safe. Standard binary classifiers treat unlabeled samples as negatives, introducing a systematic false-negative bias.",
+      "We fix π_p = P(Y=1) = 0.40. The Elkan-Noto method (a naive positive-vs-all classifier trained via 5-fold CV) estimates the labeling frequency c = E[f(X)|Y=1] and returns π_p = P(labeled) / c ≈ 9%, but this underestimates the true genome-wide safety liability prevalence because many safety-relevant genes have simply not been studied yet.",
       "Setting π_p = 0.40 is mathematically equivalent to a monotone logit-shift of all scores, which preserves rank ordering (AUROC/AUPRC are unchanged by theory) while producing more informative score spread. Empirically, it improved OOF AUROC from 0.691 to 0.727.",
     ],
     metric: "π_p = 40%",
@@ -43,8 +43,8 @@ const STEPS = [
     badge: "Weighted Outcome Estimation",
     badgeColor: "bg-purple-100 text-purple-800",
     content: [
-      "The outcome model is trained exclusively on the 1,506 drugged DB genes. Combined sample weights correct for both selection bias (IPW) and unlabeled negatives (PU reweighting): w_i = ipw_i × π_p (for positives) or ipw_i × (1 − π_p) (for unlabeled negatives).",
-      "Five-fold cross-fitting produces out-of-fold (OOF) predictions m̂_oof(X_i) for each drugged gene — scores that were never trained on the gene being scored. These honest predictions feed directly into the AIPW correction.",
+      "The outcome model is trained exclusively on the 1,506 drugged DB genes. Combined sample weights correct for both selection bias (IPW) and unlabeled negatives (PU reweighting): w_i = ipw_i × π_p (for positives) or ipw_i × (1 - π_p) (for unlabeled negatives).",
+      "Five-fold cross-fitting produces out-of-fold (OOF) predictions m̂_oof(X_i) for each drugged gene: scores that were never trained on the gene being scored. These honest predictions feed directly into the AIPW correction.",
       "The final outcome model (trained on all 1,506 drugged genes) is used to extrapolate m̂(X) to undrugged genes for Step 4.",
     ],
     metric: "OOF AUROC 0.727, AUPRC 0.454",
@@ -57,10 +57,10 @@ const STEPS = [
     badgeColor: "bg-orange-100 text-orange-800",
     content: [
       "The augmented inverse propensity weighting (AIPW) pseudo-outcome combines both models into a single corrected target for each gene:",
-      "Ỹ_i  =  m̂(X_i)  +  (S_i / π̂_i) × (Y_i − m̂(X_i))",
-      "For drugged genes (S=1): the correction term (Y_i − m̂_oof_i) / π̂_i removes residual confounding. For undrugged genes (S=0): the correction term vanishes and Ỹ_i = m̂(X_i). Double robustness guarantees consistency if either the propensity or the outcome model is correctly specified.",
+      "Ỹ_i  =  m̂(X_i)  +  (S_i / π̂_i) × (Y_i - m̂(X_i))",
+      "For drugged genes (S=1): the correction term (Y_i - m̂_oof_i) / π̂_i removes residual confounding. For undrugged genes (S=0): the correction term vanishes and Ỹ_i = m̂(X_i). Double robustness guarantees consistency if either the propensity or the outcome model is correctly specified.",
     ],
-    metric: "AIPW pseudo-outcomes clipped to [−1, 2]",
+    metric: "AIPW pseudo-outcomes clipped to [-1, 2]",
     metricNote: "Drugged gene Ỹ: mean 0.01, std 1.02; Undrugged: mean 0.04, std 0.10",
   },
   {
@@ -70,7 +70,7 @@ const STEPS = [
     badgeColor: "bg-red-100 text-red-800",
     content: [
       "A final XGBoost regressor is trained on all 17,745 DB genes to predict Ỹ from features X. Drugged genes are weighted 2× because their pseudo-outcomes carry true label information. This step smooths the noisy pseudo-outcomes over the feature space.",
-      "The deployed predictor m_DR(X) ∈ [0, 1] is a single model that produces valid, de-biased safety risk scores for any gene — drugged or not — without requiring a model-switching heuristic.",
+      "The deployed predictor m_DR(X) ∈ [0, 1] is a single model that produces valid, de-biased safety risk scores for any gene, drugged or not, without requiring a model-switching heuristic.",
       "SHAP values from m_DR(X) explain exactly which features drive each gene's risk score, with a consistent interpretation across the genome.",
     ],
     metric: "17,745 genes scored",
@@ -88,7 +88,7 @@ const DATA_SOURCES = [
   {
     name: "CZ CellxGene Census",
     description:
-      "Single-cell RNA-seq aggregations across 60 cell types × 14 tissues. Provides per-gene mean expression and fraction expressing across all 60 cell types — no manual curation of which cell types to include.",
+      "Single-cell RNA-seq aggregations across 60 cell types × 14 tissues. Provides per-gene mean expression and fraction expressing across all 60 cell types: no manual curation of which cell types to include.",
     type: "Expression Features",
   },
   {
@@ -134,13 +134,13 @@ export default function MethodologyPage() {
           <ul className="list-disc pl-5 space-y-1 text-sm">
             <li>
               <strong className="text-foreground">Selection bias:</strong> Safety events are only
-              observed for genes that have reached clinical trials — a non-random,
+              observed for genes that have reached clinical trials: a non-random,
               druggability-enriched subset of the genome. A model trained on this population
               will overfit to features that predict drug-target selection, not safety.
             </li>
             <li>
               <strong className="text-foreground">Positive-unlabeled (PU) structure:</strong> Genes
-              without a recorded safety event are not confirmed safe — they are <em>unlabeled</em>.
+              without a recorded safety event are not confirmed safe: they are <em>unlabeled</em>.
               Treating them as true negatives introduces systematic false-negative bias.
             </li>
           </ul>
@@ -187,7 +187,7 @@ export default function MethodologyPage() {
                     <div className="flex items-center gap-2 pt-1">
                       <BarChart2 className="h-4 w-4 text-primary shrink-0" />
                       <span className="text-sm font-semibold">{step.metric}</span>
-                      <span className="text-xs text-muted-foreground">— {step.metricNote}</span>
+                      <span className="text-xs text-muted-foreground">({step.metricNote})</span>
                     </div>
                   </div>
                 </div>
@@ -258,17 +258,17 @@ export default function MethodologyPage() {
           <ul className="list-disc pl-5 space-y-1">
             <li>
               <strong className="text-foreground">Double robustness:</strong> the AIPW estimator is
-              consistent if either the propensity or the outcome model is correctly specified —
+              consistent if either the propensity or the outcome model is correctly specified:
               a weaker assumption than requiring both to be correct.
             </li>
             <li>
               <strong className="text-foreground">Cross-fitting (Chernozhukov et al.):</strong>{" "}
               5-fold cross-fitting for both Step 1 and Step 3 prevents the residual
-              (Y − m̂) from correlating with propensity estimation noise, eliminating
+              (Y - m̂) from correlating with propensity estimation noise, eliminating
               second-order bias that would otherwise break double robustness.
             </li>
             <li>
-              <strong className="text-foreground">PU consistency:</strong> Elkan–Noto prior
+              <strong className="text-foreground">PU consistency:</strong> Elkan-Noto prior
               correction prevents the outcome model from treating all unlabeled genes as
               true negatives, reducing systematic optimism in undrugged gene scores.
             </li>

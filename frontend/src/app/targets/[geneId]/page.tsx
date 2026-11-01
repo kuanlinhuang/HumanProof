@@ -106,7 +106,7 @@ export default function TargetSafetyCardPage() {
   const { expression_summary, plof_summary, dosage_sensitivity } = safetyCard;
   const riskBadge = RISK_BADGE[safetyCard.risk_class] || RISK_BADGE.moderate;
 
-  // OT encodes maxClinicalTrialPhase on a 0.25–1.0 scale:
+  // OT encodes maxClinicalTrialPhase on a 0.25 to 1.0 scale:
   //   0.25 = Phase I, 0.5 = Phase II, 0.75 = Phase III, 1.0 = Approved
   const PHASE_LABELS: Record<number, string> = {
     0.25: "Phase I",
@@ -153,7 +153,7 @@ export default function TargetSafetyCardPage() {
 
       {/* Summary Cards */}
       <div className="grid gap-4 md:grid-cols-4">
-        {/* Risk card — DR score + optional clinical metadata */}
+        {/* Risk card: DR score + optional clinical metadata */}
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-sm">
@@ -284,7 +284,7 @@ export default function TargetSafetyCardPage() {
               <span className="text-sm font-semibold tabular-nums">
                 {dosage_sensitivity?.loeuf_score != null
                   ? dosage_sensitivity.loeuf_score.toFixed(3)
-                  : "—"}
+                  : "n/a"}
               </span>
             </div>
           </CardContent>
@@ -347,7 +347,7 @@ export default function TargetSafetyCardPage() {
               <CardDescription>
                 All{" "}
                 <span className="font-medium">~17,700 human protein-coding genes</span>{" "}
-                scored by the DR+PU model — a doubly-robust, selection-bias-corrected
+                scored by the DR+PU model: a doubly-robust, selection-bias-corrected
                 predictor that produces valid scores for both drugged and novel targets.
                 Genes with confirmed safety events (red), drugged genes without safety
                 events (purple), and novel undrugged targets (gray).
@@ -452,10 +452,10 @@ export default function TargetSafetyCardPage() {
                           </span>
                         </td>
                         <td className="p-2 text-right font-mono text-xs">
-                          {assoc.p_value_burden != null ? assoc.p_value_burden.toExponential(2) : "—"}
+                          {assoc.p_value_burden != null ? assoc.p_value_burden.toExponential(2) : "n/a"}
                         </td>
                         <td className="p-2 text-right font-mono text-xs">
-                          {assoc.p_value_skat != null ? assoc.p_value_skat.toExponential(2) : "—"}
+                          {assoc.p_value_skat != null ? assoc.p_value_skat.toExponential(2) : "n/a"}
                         </td>
                         <td className="p-2 text-right font-mono text-xs">
                           {assoc.beta.toFixed(4)}

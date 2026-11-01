@@ -24,7 +24,7 @@ export default function PipelinePage() {
       const result = await api.listJobs(10);
       setRecentJobs(result.jobs);
     } catch {
-      // No jobs yet — that's OK
+      // No jobs yet, that's OK
     }
   };
 

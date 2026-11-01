@@ -41,7 +41,7 @@ const CustomTooltip = ({
   const total = payload.reduce((s, p) => s + p.value, 0);
   return (
     <div className="rounded border bg-card px-3 py-2 shadow-md" style={{ fontSize: 13 }}>
-      <p className="font-semibold mb-1">Score {label} – {binEnd}</p>
+      <p className="font-semibold mb-1">Score {label} to {binEnd}</p>
       {payload.map((p) => (
         <p key={p.name} style={{ color: p.color }}>{p.name}: {p.value}</p>
       ))}
@@ -95,7 +95,7 @@ export function ScoreHistogram({
         )}
         {geneScore == null && (
           <span className="ml-1 italic">
-            This gene has empirical drug/safety data — no predicted score is shown.
+            This gene has empirical drug/safety data: no predicted score is shown.
           </span>
         )}
       </p>

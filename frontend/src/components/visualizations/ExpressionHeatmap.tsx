@@ -66,7 +66,7 @@ export function ExpressionHeatmap({ data, geneSymbol }: ExpressionHeatmapProps) 
       .attr("font-size", "15px")
       .attr("font-weight", "600")
       .attr("fill", "currentColor")
-      .text(`${geneSymbol} — Expression by Cell Type`);
+      .text(`${geneSymbol}: Expression by Cell Type`);
 
     // Bars
     const bars = g
