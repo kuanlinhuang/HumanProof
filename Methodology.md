@@ -10,7 +10,7 @@ This document describes the data acquisition, processing, feature engineering, a
 2. [Data Sources and Processing](#2-data-sources-and-processing)
    - 2.1 [CZ CellxGene Census: Expression](#21-cz-cellxgene-census-expression)
    - 2.2 [Genebass UK Biobank: Protein-Truncating Variant Burden Tests](#22-genebass-uk-biobank-protein-truncating-variant-burden-tests)
-   - 2.3 [LOEUF Constraint Scores (gnomAD)](#23-loeuf-constraint-scores-gnomaD)
+   - 2.3 [LOEUF Constraint Scores (gnomAD)](#23-loeuf-constraint-scores-gnomad)
    - 2.4 [Open Targets Platform 25.12](#24-open-targets-platform-2512)
 3. [Feature Engineering](#3-feature-engineering)
    - 3.1 [Expression Features](#31-expression-features)
