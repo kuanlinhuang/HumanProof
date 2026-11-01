@@ -78,7 +78,7 @@ def load_expanded_plof() -> pd.DataFrame:
         GROUP BY gene_symbol
     """, conn)
 
-    # Per-organ stats — use phenotype_category (lowercase) to match model features
+    # Per-organ stats: use phenotype_category (lowercase) to match model features
     organ = pd.read_sql("""
         SELECT
             gene_symbol,
@@ -91,7 +91,7 @@ def load_expanded_plof() -> pd.DataFrame:
     conn.close()
 
     # Pivot organs → wide: ("min_p","cardiovascular") → "plof_cardiovascular_min_p"
-    # All phenotype categories from the DB are included — no hardcoded filter.
+    # All phenotype categories from the DB are included: no hardcoded filter.
     organ_wide = organ.pivot_table(
         index="gene_symbol",
         columns="phenotype_category",
@@ -115,7 +115,7 @@ def _ct_col(ct: str) -> str:
 def load_expanded_expression() -> pd.DataFrame:
     """Cell-type and organ-level expression features for all DB genes → by gene_symbol.
 
-    Uses ALL cell types present in the DB — no hardcoded filter.
+    Uses ALL cell types present in the DB: no hardcoded filter.
     Column naming: expr_ct_<sanitized_cell_type> (mean) and ..._pct (% expressing).
     """
     conn = sqlite3.connect(DB_PATH)
@@ -180,7 +180,7 @@ def build_expanded_feature_matrix() -> pd.DataFrame:
     print("Loading expanded expression features...")
     expr = load_expanded_expression()
 
-    # 1. Merge LOEUF by targetId (ENSG) — gives us gene_symbol for DB genes
+    # 1. Merge LOEUF by targetId (ENSG): gives us gene_symbol for DB genes
     df = ot.merge(
         loeuf[["targetId", "gene_symbol", "loeuf_score"]],
         on="targetId",
@@ -203,7 +203,7 @@ def build_expanded_feature_matrix() -> pd.DataFrame:
 
 def export_shap_all_genes() -> None:
     print("=" * 60)
-    print("Export SHAP — ALL DB protein-coding genes")
+    print("Export SHAP: ALL DB protein-coding genes")
     print("=" * 60)
 
     # ── Build feature matrix ──────────────────────────────────────

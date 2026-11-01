@@ -1,7 +1,7 @@
 """
 Export per-gene SHAP values for ALL DB genes using the DR+PU final model.
 
-Uses the deployed m_DR(X) regressor from safety_model_dr.py — a single model
+Uses the deployed m_DR(X) regressor from safety_model_dr.py: a single model
 that produces valid, selection-bias-corrected safety scores for all 17,745
 protein-coding genes, whether drugged or not.
 
@@ -51,7 +51,7 @@ OUT_JSON    = OUT_DIR_DR / "gene_shap_dr.json"
 
 def export_shap_dr() -> None:
     print("=" * 60)
-    print("Export SHAP — DR+PU model — ALL DB genes")
+    print("Export SHAP: DR+PU model, ALL DB genes")
     print("=" * 60)
 
     # ── Feature matrix ────────────────────────────────────────────

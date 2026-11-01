@@ -2,10 +2,10 @@
 Publication figures for HumanProof DR+PU safety model.
 
 Outputs saved to figures/ (project root):
-  fig1_roc_prc.png            — AUROC and AUPRC curves
-  fig2_score_distribution.png — DR score distribution by safety label
-  fig3_feature_importance.png — Top 20 features by mean |SHAP| (sampled)
-  fig4_calibration.png        — Calibration curve on drugged genes (Step 3 OOF)
+  fig1_roc_prc.png            : AUROC and AUPRC curves
+  fig2_score_distribution.png : DR score distribution by safety label
+  fig3_feature_importance.png : Top 20 features by mean |SHAP| (sampled)
+  fig4_calibration.png        : Calibration curve on drugged genes (Step 3 OOF)
 
 Usage:
     ~/miniconda3/bin/python data/plot_paper_figures.py
@@ -46,8 +46,8 @@ C = {
     "positive":     "#e53e3e",   # red
     "drugged_safe": "#805ad5",   # purple
     "unlabeled":    "#718096",   # gray
-    "oof":          "#3182ce",   # blue  — Step 3 OOF
-    "dr":           "#dd6b20",   # orange — Step 5 DR (in-sample)
+    "oof":          "#3182ce",   # blue: Step 3 OOF
+    "dr":           "#dd6b20",   # orange: Step 5 DR (in-sample)
     "random":       "#a0aec0",   # light gray
 }
 GROUP_COLORS = {"ot": "#3182ce", "genetics": "#38a169", "expression": "#d69e2e"}
@@ -91,7 +91,7 @@ def plot_roc_prc(preds: pd.DataFrame) -> None:
     # Step 3: m_hat is the OOF outcome-model prediction for drugged genes
     # Step 5: safety_score_dr is the final DR regressor (in-sample on drugged)
     curves = [
-        (drugged["m_hat"].values,          "Outcome model — OOF (Step 3)", C["oof"], "-"),
+        (drugged["m_hat"].values,          "Outcome model: OOF (Step 3)", C["oof"], "-"),
         (drugged["safety_score_dr"].values, "DR final model (Step 5)",      C["dr"],  "--"),
     ]
 
@@ -138,7 +138,7 @@ def plot_roc_prc(preds: pd.DataFrame) -> None:
             transform=ax.transAxes, ha="left", va="bottom",
             fontsize=8, color="gray", style="italic")
 
-    fig.suptitle("HumanProof DR+PU Model — Discriminative Performance\n"
+    fig.suptitle("HumanProof DR+PU Model: Discriminative Performance\n"
                  "(evaluated on drugged genes with known safety outcomes)",
                  fontsize=12, y=1.01)
     fig.tight_layout()
@@ -244,7 +244,7 @@ def plot_feature_importance(df: pd.DataFrame, feature_cols: list[str],
     ax.set_yticklabels(importance["label"].values, fontsize=9.5)
     ax.invert_yaxis()
     ax.set_xlabel("Mean |SHAP value|  (DR model)")
-    ax.set_title(f"Top 20 Features — DR+PU Model\n"
+    ax.set_title(f"Top 20 Features: DR+PU Model\n"
                  f"(SHAP on {min(n_sample, len(df)):,}-gene sample)",
                  fontweight="bold")
 
@@ -285,7 +285,7 @@ def plot_calibration(preds: pd.DataFrame) -> None:
     ax.plot([0, 1], [0, 1], color=C["random"], lw=1, ls=":", label="Perfect calibration")
     ax.set_xlabel("Mean Predicted Probability")
     ax.set_ylabel("Fraction of Positives (Observed)")
-    ax.set_title("Calibration — Outcome Model OOF\n(drugged genes, Step 3)",
+    ax.set_title("Calibration: Outcome Model OOF\n(drugged genes, Step 3)",
                  fontweight="bold")
     ax.legend(fontsize=9, framealpha=0.9)
     ax.set_xlim(-0.02, 1.02)
@@ -303,7 +303,7 @@ def plot_calibration(preds: pd.DataFrame) -> None:
              label=f"Safety event (n={len(pos_scores):,})", density=True)
     ax2.set_xlabel("Outcome Model Score  m̂(X)  [OOF]")
     ax2.set_ylabel("Density")
-    ax2.set_title("Score Separation — Drugged Genes Only\n(Step 3 OOF)",
+    ax2.set_title("Score Separation: Drugged Genes Only\n(Step 3 OOF)",
                   fontweight="bold")
     ax2.legend(fontsize=9, framealpha=0.9)
 
@@ -320,7 +320,7 @@ def plot_calibration(preds: pd.DataFrame) -> None:
 
 def main() -> None:
     print("=" * 60)
-    print("HumanProof — Generating Publication Figures")
+    print("HumanProof: Generating Publication Figures")
     print(f"Output directory: {FIG_DIR}")
     print("=" * 60)
 

@@ -28,7 +28,7 @@ dist/
 .DS_Store
 Thumbs.db
 
-# Data (large binary files — transfer separately via rsync/S3)
+# Data (large binary files: transfer separately via rsync/S3)
 data/reference/
 *.h5ad
 *.pkl

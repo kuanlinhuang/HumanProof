@@ -4,7 +4,7 @@ Export per-gene SHAP values for the 108 HumanProof target genes.
 Produces: data/safety_model_output/gene_shap_108.json
 
 Each gene entry contains:
-  safety_score  : HumanProof safety score (0–1; higher = more safety concern)
+  safety_score  : HumanProof safety score (0 to 1; higher = more safety concern)
   base_value    : SHAP base (expected model output in log-odds space)
   model         : "B" (drugged-only OOF, recommended) or "A" (all-labeled)
   features      : list of {name, label, group, shap_value, feature_value}
@@ -56,24 +56,24 @@ READABLE_FEATURES: dict[str, str] = {
     # LOEUF
     "loeuf_score":                         "LOEUF constraint score",
     # pLoF global
-    "plof_min_pval":                       "pLoF: min −log₁₀(p)",
+    "plof_min_pval":                       "pLoF: min -log₁₀(p)",
     "plof_n_sig":                          "pLoF: genome-wide sig. hits",
     "plof_max_abs_beta":                   "pLoF: max |β| (all pheno)",
     "plof_n_phenotypes":                   "pLoF: N phenotypes",
     # pLoF organs
-    "plof_cardiovascular_min_p":           "pLoF: Cardiovascular −log₁₀p",
+    "plof_cardiovascular_min_p":           "pLoF: Cardiovascular -log₁₀p",
     "plof_cardiovascular_max_beta":        "pLoF: Cardiovascular |β|",
-    "plof_hepatic_min_p":                  "pLoF: Hepatic −log₁₀p",
+    "plof_hepatic_min_p":                  "pLoF: Hepatic -log₁₀p",
     "plof_hepatic_max_beta":               "pLoF: Hepatic |β|",
-    "plof_neurological_min_p":             "pLoF: Neurological −log₁₀p",
+    "plof_neurological_min_p":             "pLoF: Neurological -log₁₀p",
     "plof_neurological_max_beta":          "pLoF: Neurological |β|",
-    "plof_renal_min_p":                    "pLoF: Renal −log₁₀p",
+    "plof_renal_min_p":                    "pLoF: Renal -log₁₀p",
     "plof_renal_max_beta":                 "pLoF: Renal |β|",
-    "plof_respiratory_min_p":              "pLoF: Respiratory −log₁₀p",
+    "plof_respiratory_min_p":              "pLoF: Respiratory -log₁₀p",
     "plof_respiratory_max_beta":           "pLoF: Respiratory |β|",
-    "plof_hematologic_min_p":              "pLoF: Hematologic −log₁₀p",
+    "plof_hematologic_min_p":              "pLoF: Hematologic -log₁₀p",
     "plof_hematologic_max_beta":           "pLoF: Hematologic |β|",
-    "plof_musculoskeletal_min_p":          "pLoF: Musculoskeletal −log₁₀p",
+    "plof_musculoskeletal_min_p":          "pLoF: Musculoskeletal -log₁₀p",
     "plof_musculoskeletal_max_beta":       "pLoF: Musculoskeletal |β|",
     # Organ-level max expression
     "expr_organ_Brain":                    "Brain expression (max)",
@@ -132,7 +132,7 @@ def _sigmoid(x: float) -> float:
 
 def export_gene_shap() -> None:
     print("=" * 60)
-    print("Export per-gene SHAP values — 108 HumanProof target genes")
+    print("Export per-gene SHAP values: 108 HumanProof target genes")
     print("=" * 60)
 
     # ── Load full feature matrix ──────────────────────────────────

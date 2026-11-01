@@ -47,7 +47,7 @@ READABLE_FEATURES = {
     "tissueDistribution":                 "Tissue distribution",
     "isInMembrane":                       "Membrane protein",
     "isSecreted":                         "Secreted protein",
-    "plof_respiratory_min_p":             "pLoF: Respiratory −log₁₀p",
+    "plof_respiratory_min_p":             "pLoF: Respiratory -log₁₀p",
     "expr_organ_Heart":                   "Heart expression (max)",
     "isCancerDriverGene":                 "Cancer driver gene",
     "plof_musculoskeletal_max_beta":      "pLoF: Musculoskeletal |β|",
@@ -93,7 +93,7 @@ def fig1_performance(preds_b: pd.DataFrame) -> None:
     prev = y.mean()
 
     fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
-    fig.suptitle("Model B — Drugged-only  |  Out-of-fold performance (n = 1,564)",
+    fig.suptitle("Model B: Drugged-only  |  Out-of-fold performance (n = 1,564)",
                  fontsize=13, fontweight="bold", y=1.01)
 
     # ROC
@@ -113,7 +113,7 @@ def fig1_performance(preds_b: pd.DataFrame) -> None:
                label=f"Random baseline = {prev:.2f}")
     ax.set_xlabel("Recall", fontsize=11)
     ax.set_ylabel("Precision", fontsize=11)
-    ax.set_title("Precision–Recall Curve", fontweight="bold")
+    ax.set_title("Precision-Recall Curve", fontweight="bold")
     ax.legend(loc="upper right", frameon=False, fontsize=11)
     ax.set_xlim(-0.02, 1.02); ax.set_ylim(-0.02, 1.08)
 
@@ -151,7 +151,7 @@ def fig2_shap(shap_b: pd.DataFrame, n_top: int = 15) -> None:
     ax.set_yticklabels(top["label"], fontsize=10.5)
     ax.invert_yaxis()
     ax.set_xlabel("Mean |SHAP value| (impact on model output)", fontsize=11)
-    ax.set_title("Feature Importance — Model B (Drugged-only)\nTop 15 features by SHAP",
+    ax.set_title("Feature Importance: Model B (Drugged-only)\nTop 15 features by SHAP",
                  fontweight="bold", fontsize=12)
 
     legend_patches = [
@@ -175,7 +175,7 @@ def fig2_shap(shap_b: pd.DataFrame, n_top: int = 15) -> None:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Figure 3: HumanProof safety score — all 108 target genes
+# Figure 3: HumanProof safety score: all 108 target genes
 # ─────────────────────────────────────────────────────────────────────────────
 
 def fig3_humanproof_score(preds_b: pd.DataFrame, preds_a: pd.DataFrame) -> None:
@@ -188,7 +188,7 @@ def fig3_humanproof_score(preds_b: pd.DataFrame, preds_a: pd.DataFrame) -> None:
     b108 = preds_b[preds_b["gene_symbol"].notna()].copy()
     b108 = b108.rename(columns={"safety_score_oof": "score"})
     b108["model"]  = "B (drugged-only)"
-    b108["source"] = "Model B — OOF score"
+    b108["source"] = "Model B: OOF score"
 
     # ── Model A undrugged genes ───────────────────────────────────
     a_unk = preds_a[
@@ -197,7 +197,7 @@ def fig3_humanproof_score(preds_b: pd.DataFrame, preds_a: pd.DataFrame) -> None:
     a_unk = a_unk.rename(columns={"safety_score": "score"})
     a_unk["model"]        = "A (extrapolated)"
     a_unk["safety_label"] = "unlabeled"
-    a_unk["source"]       = "Model A — extrapolated"
+    a_unk["source"]       = "Model A: extrapolated"
 
     # Remaining 108 positives not in drugged (e.g. PTEN, VHL, BRCA1 with hasSafetyEvent but no trial)
     a_pos = preds_a[
@@ -206,7 +206,7 @@ def fig3_humanproof_score(preds_b: pd.DataFrame, preds_a: pd.DataFrame) -> None:
     ].copy()
     a_pos = a_pos.rename(columns={"safety_score": "score"})
     a_pos["model"]  = "A (extrapolated)"
-    a_pos["source"] = "Model A — extrapolated"
+    a_pos["source"] = "Model A: extrapolated"
 
     # Combine and sort
     all_genes = pd.concat([b108, a_unk, a_pos], ignore_index=True)
@@ -235,7 +235,7 @@ def fig3_humanproof_score(preds_b: pd.DataFrame, preds_a: pd.DataFrame) -> None:
     ax.set_xlabel("HumanProof Safety Score", fontsize=12, labelpad=8)
     ax.set_xlim(-0.03, 1.0)
     ax.set_title(
-        "HumanProof Safety Score — 108 Target Genes\n"
+        "HumanProof Safety Score: 108 Target Genes\n"
         "Model B (drugged) · Model A extrapolated (undrugged)",
         fontweight="bold", fontsize=12,
     )
@@ -249,7 +249,7 @@ def fig3_humanproof_score(preds_b: pd.DataFrame, preds_a: pd.DataFrame) -> None:
         Line2D([0], [0], marker="o", color="w", markerfacecolor=C_POS,
                markersize=9, label="Confirmed safety event"),
         Line2D([0], [0], marker="o", color="w", markerfacecolor=C_SAFE,
-               markersize=9, label="Drugged — no safety event"),
+               markersize=9, label="Drugged: no safety event"),
         Line2D([0], [0], marker="o", color="w", markerfacecolor=C_UNK,
                markersize=9, label="Not yet drugged (unlabeled)"),
         Line2D([0], [0], marker="o", color="w", markerfacecolor="#555",
@@ -268,7 +268,7 @@ def fig3_humanproof_score(preds_b: pd.DataFrame, preds_a: pd.DataFrame) -> None:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Figure 4: Score distribution — positive vs drugged_safe
+# Figure 4: Score distribution: positive vs drugged_safe
 # ─────────────────────────────────────────────────────────────────────────────
 
 def fig4_score_distribution(preds_b: pd.DataFrame) -> None:
@@ -293,7 +293,7 @@ def fig4_score_distribution(preds_b: pd.DataFrame) -> None:
     ax.set_xlabel("HumanProof Safety Score (OOF)", fontsize=12)
     ax.set_ylabel("Number of targets", fontsize=12)
     ax.set_title(
-        "Score Distribution — Drugged Targets (Model B)\n"
+        "Score Distribution: Drugged Targets (Model B)\n"
         "Confirmed safety event vs no recorded event",
         fontweight="bold", fontsize=12,
     )
@@ -313,7 +313,7 @@ def fig4_score_distribution(preds_b: pd.DataFrame) -> None:
 
 def main():
     print("=" * 60)
-    print("HumanProof Safety Model — Visualizations")
+    print("HumanProof Safety Model: Visualizations")
     print("=" * 60)
 
     preds_b, preds_a, shap_b = load_data()
@@ -324,7 +324,7 @@ def main():
     print("Fig 2: SHAP feature importance...")
     fig2_shap(shap_b)
 
-    print("Fig 3: HumanProof score — 108 genes...")
+    print("Fig 3: HumanProof score: 108 genes...")
     fig3_humanproof_score(preds_b, preds_a)
 
     print("Fig 4: Score distribution...")

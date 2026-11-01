@@ -3,10 +3,10 @@ Diagnostic plots for the DR+PU safety prediction model.
 
 Generates:
   data/safety_model_output/dr/figures/
-    01_propensity_overlap.png     — P(drugged|X) distribution by group
-    02_score_distribution.png     — DR score by safety label
-    03_pseudo_outcome.png         — Ỹ distribution for drugged vs undrugged
-    04_feature_importance.png     — Top 20 features by mean |SHAP| (from DR model)
+    01_propensity_overlap.png     : P(drugged|X) distribution by group
+    02_score_distribution.png     : DR score by safety label
+    03_pseudo_outcome.png         : Ỹ distribution for drugged vs undrugged
+    04_feature_importance.png     : Top 20 features by mean |SHAP| (from DR model)
 
 Usage:
     ~/miniconda3/bin/python data/plot_dr_diagnostics.py
@@ -108,7 +108,7 @@ def plot_score_distribution(df: pd.DataFrame) -> None:
 
     ax.set_xlabel("DR Safety Score  m_DR(X)", fontsize=12)
     ax.set_ylabel("Gene Count", fontsize=12)
-    ax.set_title("DR+PU Safety Score Distribution — All 17,745 DB Genes", fontsize=13, fontweight="bold")
+    ax.set_title("DR+PU Safety Score Distribution: All 17,745 DB Genes", fontsize=13, fontweight="bold")
     ax.legend(framealpha=0.9)
     ax.set_yscale("log")
 
@@ -152,7 +152,7 @@ def plot_pseudo_outcomes(df: pd.DataFrame) -> None:
     ax2.plot([0, 1], [0, 1], "k--", lw=0.8, alpha=0.5, label="y = x")
     ax2.set_xlabel("Naive m̂ (outcome model)", fontsize=11)
     ax2.set_ylabel("m_DR(X) (final DR score)", fontsize=11)
-    ax2.set_title("DR Score vs Naive m̂ — Drugged Genes", fontsize=12, fontweight="bold")
+    ax2.set_title("DR Score vs Naive m̂: Drugged Genes", fontsize=12, fontweight="bold")
 
     pos_patch  = mpatches.Patch(color=COLORS["positive"],     label="Safety event")
     safe_patch = mpatches.Patch(color=COLORS["drugged_safe"], label="No event")
@@ -192,7 +192,7 @@ def plot_feature_importance(df: pd.DataFrame, feature_cols: list[str]) -> None:
     ax.set_yticklabels(importance["label"].values, fontsize=9)
     ax.invert_yaxis()
     ax.set_xlabel("Mean |SHAP value|  (DR model)", fontsize=11)
-    ax.set_title("Top 20 Features — DR+PU Model", fontsize=13, fontweight="bold")
+    ax.set_title("Top 20 Features: DR+PU Model", fontsize=13, fontweight="bold")
 
     legend_patches = [
         mpatches.Patch(color="#3182ce", label="Open Targets"),
@@ -210,7 +210,7 @@ def plot_feature_importance(df: pd.DataFrame, feature_cols: list[str]) -> None:
 
 def main() -> None:
     print("=" * 60)
-    print("DR+PU Model — Diagnostic Plots")
+    print("DR+PU Model: Diagnostic Plots")
     print("=" * 60)
 
     df, feature_cols = load_data()

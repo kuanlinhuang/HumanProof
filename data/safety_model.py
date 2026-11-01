@@ -3,14 +3,14 @@ Safety prediction model for biological targets.
 
 Two complementary models are trained and evaluated:
 
-MODEL A — All-labeled (semi-supervised / PU-like)
+MODEL A: All-labeled (semi-supervised / PU-like)
   Positive  : hasSafetyEvent == -1  (945 targets with confirmed safety events)
   Negative  : drugged target (maxClinicalTrialPhase notna) + hasSafetyEvent NaN (1,149)
-  Unlabeled : not drugged, no safety record — predicted but NOT trained on
+  Unlabeled : not drugged, no safety record; predicted but NOT trained on
   Limitation: predictions for undrugged genes are extrapolations far outside the
               training distribution and should be interpreted with caution.
 
-MODEL B — Drugged-only (focused, honest evaluation)
+MODEL B: Drugged-only (focused, honest evaluation)
   Restricted to genes that have reached clinical trials (1,564 targets).
   Positive  : hasSafetyEvent == -1 within drugged subset (415)
   Negative  : hasSafetyEvent NaN within drugged subset (1,149)
@@ -114,7 +114,7 @@ ENSG_TO_SYMBOL = {v: k for k, v in GENES.items()}
 PLOF_ORGANS = [
     "cardiovascular", "hepatic", "neurological", "renal",
     "respiratory", "hematologic", "musculoskeletal",
-]  # legacy constant — only used by the 108-gene Model A/B loader below
+]  # legacy constant: only used by the 108-gene Model A/B loader below
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -228,7 +228,7 @@ def _ct_col(ct: str) -> str:
 def load_expression_features() -> pd.DataFrame:
     """Load per-gene expression for ALL cell types in the DB.
 
-    Uses dynamic pivot — no hardcoded cell-type filter.
+    Uses dynamic pivot: no hardcoded cell-type filter.
     Column naming: expr_ct_<sanitized_cell_type> (mean) and ..._pct (% expressing).
     """
     print("Loading expression features...")
@@ -329,7 +329,7 @@ def get_feature_cols(df: pd.DataFrame) -> list[str]:
 
     OT and LOEUF features are checked by name.
     pLoF base features are checked by name; pLoF organ features (plof_*_min_p /
-    plof_*_max_beta) are discovered dynamically from df.columns — all phenotype
+    plof_*_max_beta) are discovered dynamically from df.columns: all phenotype
     categories in the DB are included, no hardcoded organ filter.
     Expression features (expr_ct_* and expr_organ_*) are also discovered dynamically.
     """
@@ -501,7 +501,7 @@ def train_drugged_only(df: pd.DataFrame) -> tuple[xgb.XGBClassifier, list[str], 
     n_pos = drugged["y"].sum()
     n_neg = (drugged["y"] == 0).sum()
     print(f"\n{'='*60}")
-    print("MODEL B — Drugged-only")
+    print("MODEL B: Drugged-only")
     print(f"{'='*60}")
     print(f"  Drugged targets : {len(drugged):,}")
     print(f"  Positives (safety event): {n_pos}")
@@ -589,7 +589,7 @@ def main():
 
     # ── MODEL A: all-labeled (semi-supervised) ────────────────────
     print(f"\n{'='*60}")
-    print("MODEL A — All-labeled (semi-supervised)")
+    print("MODEL A: All-labeled (semi-supervised)")
     print(f"{'='*60}")
     model_a, feat_a, df_labeled_a = train_and_evaluate(df)
 
@@ -619,7 +619,7 @@ def main():
 
     # ── Summary for our 108 genes ─────────────────────────────────
     print(f"\n{'='*60}")
-    print("Our 108 genes — Model B (drugged-only OOF scores)")
+    print("Our 108 genes: Model B (drugged-only OOF scores)")
     print(f"{'='*60}")
     our_b = preds_b[preds_b["gene_symbol"].notna()].copy()
     print(our_b[["gene_symbol","safety_score_oof","safety_label",
@@ -627,7 +627,7 @@ def main():
 
     undrugged_108 = [g for g in GENES if g not in our_b["gene_symbol"].values]
     if undrugged_108:
-        print(f"\n  Not in drugged set ({len(undrugged_108)} genes — Model A scores only):")
+        print(f"\n  Not in drugged set ({len(undrugged_108)} genes: Model A scores only):")
         our_a = preds_a[preds_a["gene_symbol"].isin(undrugged_108)].copy()
         print(our_a[["gene_symbol","safety_score","safety_label"]].to_string(index=False))
 

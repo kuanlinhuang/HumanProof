@@ -5,19 +5,19 @@ bias in the drugged gene population via the AIPW (Augmented IPW) estimator.
 
 Architecture (5 steps, all restricted to 17,745 DB genes):
 
-  1. Cross-fitted propensity P(S=1|X)           — XGBClassifier, 5-fold
-  2. PU prior P(Y=1)                            — Elkan-Noto, 5-fold
-  3. Cross-fitted outcome P(Y=1|X)              — XGBClassifier, IPW+PU weights, 5-fold OOF
-  4. AIPW pseudo-outcome  Ỹ = m̂ + (S/π̂)(Y−m̂) — vectorized
-  5. Final regression m_DR(X) ← regress Ỹ~X    — XGBRegressor, all DB genes
+  1. Cross-fitted propensity P(S=1|X)           : XGBClassifier, 5-fold
+  2. PU prior P(Y=1)                            : Elkan-Noto, 5-fold
+  3. Cross-fitted outcome P(Y=1|X)              : XGBClassifier, IPW+PU weights, 5-fold OOF
+  4. AIPW pseudo-outcome  Ỹ = m̂ + (S/π̂)(Y-m̂) : vectorized
+  5. Final regression m_DR(X) ← regress Ỹ~X    : XGBRegressor, all DB genes
 
 Deployed predictor: m_DR(X) ∈ [0,1] for any gene in the DB.
 
 Outputs:
   data/safety_model_output/dr/
-    predictions.csv     — safety_score_dr for all 17,745 DB genes
-    model_final.json    — deployed XGBRegressor
-    model_outcome.json  — Step 3 XGBClassifier (for SHAP reference)
+    predictions.csv     : safety_score_dr for all 17,745 DB genes
+    model_final.json    : deployed XGBRegressor
+    model_outcome.json  : Step 3 XGBClassifier (for SHAP reference)
 
 Usage:
     ~/miniconda3/bin/python data/safety_model_dr.py
@@ -73,7 +73,7 @@ _XGB_COMMON = dict(
 _XGB_CLF = dict(**_XGB_COMMON, eval_metric="aucpr", early_stopping_rounds=30)
 _XGB_REG = dict(
     **{k: v for k, v in _XGB_COMMON.items() if k != "n_estimators"},
-    n_estimators=300,          # fixed — pseudo-outcome noise makes early stopping unreliable
+    n_estimators=300,          # fixed: pseudo-outcome noise makes early stopping unreliable
     eval_metric="rmse",
     objective="reg:squarederror",
 )
@@ -92,10 +92,10 @@ def fit_propensity_crossfit(
     """5-fold cross-fitted P(S=1|X).
 
     Returns df with two new columns:
-      pi_hat  — cross-fitted propensity score
-      ipw     — stabilized IPW weight  π̄ / π̂, clipped at MAX_IPW
+      pi_hat  : cross-fitted propensity score
+      ipw     : stabilized IPW weight  π̄ / π̂, clipped at MAX_IPW
     """
-    _banner("STEP 1 — Cross-fitted propensity  P(S=1 | X)")
+    _banner("STEP 1: Cross-fitted propensity  P(S=1 | X)")
 
     S = df["is_drugged"].values
     X = df[feature_cols].values.astype(float)
@@ -137,10 +137,10 @@ def estimate_pu_prior(
     Otherwise trains a naive classifier to estimate the labeling frequency c,
     returning π_p = P(labeled) / c.
     """
-    _banner("STEP 2 — PU prior  P(Y=1)  [Elkan-Noto]")
+    _banner("STEP 2: PU prior  P(Y=1)  [Elkan-Noto]")
 
     if PI_OVERRIDE is not None:
-        print(f"  PI_OVERRIDE = {PI_OVERRIDE} — skipping Elkan-Noto estimation")
+        print(f"  PI_OVERRIDE = {PI_OVERRIDE}: skipping Elkan-Noto estimation")
         return float(PI_OVERRIDE)
 
     pu_label = (df["hasSafetyEvent"] == -1.0).astype(int).values
@@ -187,13 +187,13 @@ def fit_outcome_crossfit(
 
     Sample weight = IPW × PU-weight:
       Y=1 (safety event)   → ipw × π_p
-      Y=0 (no event seen)  → ipw × (1 − π_p)
+      Y=0 (no event seen)  → ipw × (1 - π_p)
 
     Returns:
-      df_drugged   — drugged rows with 'outcome_hat_oof' and 'true_label' columns
-      final_model  — XGBClassifier trained on all drugged genes (for Step 4 extrapolation)
+      df_drugged   : drugged rows with 'outcome_hat_oof' and 'true_label' columns
+      final_model  : XGBClassifier trained on all drugged genes (for Step 4 extrapolation)
     """
-    _banner("STEP 3 — Cross-fitted outcome model  P(Y=1 | X)  [IPW + PU]")
+    _banner("STEP 3: Cross-fitted outcome model  P(Y=1 | X)  [IPW + PU]")
 
     df_d = df[df["is_drugged"] == 1].copy().reset_index(drop=True)
     Y    = (df_d["hasSafetyEvent"] == -1.0).astype(int).values
@@ -259,14 +259,14 @@ def construct_pseudo_outcomes(
 ) -> pd.DataFrame:
     """AIPW pseudo-outcome for all 17,745 DB genes (vectorized).
 
-    Ỹ_i = m̂(X_i) + (S_i / π̂_i) × (Y_i − m̂(X_i))
+    Ỹ_i = m̂(X_i) + (S_i / π̂_i) × (Y_i - m̂(X_i))
 
     Drugged  (S=1): honest OOF m̂ from Step 3; AIPW correction appended.
-    Undrugged (S=0): Ỹ_i = m̂(X_i) — extrapolated from final outcome model.
+    Undrugged (S=0): Ỹ_i = m̂(X_i), extrapolated from final outcome model.
     """
-    _banner("STEP 4 — AIPW pseudo-outcomes")
+    _banner("STEP 4: AIPW pseudo-outcomes")
 
-    # m̂(X) for all DB genes — extrapolated from final outcome model
+    # m̂(X) for all DB genes: extrapolated from final outcome model
     X_all = df[feature_cols].values.astype(float)
     m_hat = outcome_model.predict_proba(X_all)[:, 1]
 
@@ -322,7 +322,7 @@ def fit_final_model(
     Drugged genes are weighted 2× because their pseudo-outcomes are grounded
     in observed Y.  Fixed n_estimators avoids overfitting to noisy Ỹ values.
     """
-    _banner("STEP 5 — Final model  m_DR(X)  regressed on pseudo-outcomes")
+    _banner("STEP 5: Final model  m_DR(X)  regressed on pseudo-outcomes")
 
     X       = df[feature_cols].values.astype(float)
     Y_tilde = df["Y_tilde"].values
@@ -338,7 +338,7 @@ def fit_final_model(
     scores  = final.predict(drugged[feature_cols].values.astype(float))
     auc     = roc_auc_score(Y_true, scores)
     ap      = average_precision_score(Y_true, scores)
-    print(f"  In-sample drugged: AUROC={auc:.3f}  AUPRC={ap:.3f}  (inflated — diagnostic only)")
+    print(f"  In-sample drugged: AUROC={auc:.3f}  AUPRC={ap:.3f}  (inflated, diagnostic only)")
 
     return final
 
@@ -371,7 +371,7 @@ def _print_diagnostics(
           f"AUPRC={average_precision_score(Y_d, dr_d):.3f}")
     print(f"    m̂     AUROC={roc_auc_score(Y_d, m_d):.3f}  "
           f"AUPRC={average_precision_score(Y_d, m_d):.3f}")
-    print("  (Both in-sample — compare directionally, not absolutely)")
+    print("  (Both in-sample, compare directionally, not absolutely)")
 
     # Score distribution by label
     for label, name in [("positive", "Safety positives"),

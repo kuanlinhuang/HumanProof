@@ -71,7 +71,7 @@ async def init_db(retries: int = 5, base_delay: float = 1.0) -> bool:
 
     logger.error(
         "Database initialization failed after %d attempts: %s. "
-        "Starting anyway — check /health and the database service.",
+        "Starting anyway: check /health and the database service.",
         retries,
         type(last_exc).__name__ if last_exc else "unknown",
     )
