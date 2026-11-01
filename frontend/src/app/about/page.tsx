@@ -77,7 +77,7 @@ export default function AboutPage() {
           <p className="text-muted-foreground leading-relaxed">
             This reframes safety prediction from &ldquo;simulate an
             animal&rdquo; to &ldquo;interrogate human biology
-            directly&rdquo;&nbsp;&mdash; a fundamentally stronger epistemic
+            directly&rdquo;, a fundamentally stronger epistemic
             position for regulatory purposes.
           </p>
         </CardContent>
