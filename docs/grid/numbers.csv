@@ -1,0 +1,918 @@
+table,row,field,value
+labels,Open Targets file,genes,78725
+labels,Open Targets file,positive,945
+labels,Open Targets file,positive_drugged,415
+labels,Open Targets file,positive_no_phase,530
+labels,Open Targets file,drugged_safe,1149
+labels,Open Targets file,unlabeled,76631
+labels,Drugged-only rows,genes,1564
+labels,Drugged-only rows,positive,415
+labels,Drugged-only rows,positive_drugged,415
+labels,Drugged-only rows,positive_no_phase,0
+labels,Drugged-only rows,drugged_safe,1149
+labels,Drugged-only rows,unlabeled,0
+labels,DR+PU file,genes,17745
+labels,DR+PU file,positive,917
+labels,DR+PU file,positive_drugged,409
+labels,DR+PU file,positive_no_phase,508
+labels,DR+PU file,drugged_safe,1097
+labels,DR+PU file,unlabeled,15731
+setup,drugged_only,universe,78725
+setup,drugged_only,trained,1564
+setup,drugged_only,scored,1564
+setup,drugged_only,fold_train_min,1251
+setup,drugged_only,fold_train_max,1252
+setup,drugged_only,fold_score_min,312
+setup,drugged_only,fold_score_max,313
+setup,drugged_only,events,415
+setup,drugged_only,base_rate,0.265345
+setup,drugged_only,folds,5
+setup,drugged_only,seed,42
+setup,all_labeled,universe,78725
+setup,all_labeled,trained,2094
+setup,all_labeled,scored,78725
+setup,all_labeled,fold_train_min,1675
+setup,all_labeled,fold_train_max,1676
+setup,all_labeled,fold_score_min,418
+setup,all_labeled,fold_score_max,419
+setup,all_labeled,events,945
+setup,all_labeled,base_rate,0.451289
+setup,all_labeled,folds,5
+setup,all_labeled,seed,42
+setup,dr_step1,universe,17745
+setup,dr_step1,trained,17745
+setup,dr_step1,scored,17745
+setup,dr_step1,fold_train_min,14196
+setup,dr_step1,fold_train_max,14196
+setup,dr_step1,fold_score_min,3549
+setup,dr_step1,fold_score_max,3549
+setup,dr_step1,events,1506
+setup,dr_step1,base_rate,0.084869
+setup,dr_step1,folds,5
+setup,dr_step1,seed,42
+setup,dr_step3,universe,17745
+setup,dr_step3,trained,1506
+setup,dr_step3,scored,1506
+setup,dr_step3,fold_train_min,1204
+setup,dr_step3,fold_train_max,1205
+setup,dr_step3,fold_score_min,301
+setup,dr_step3,fold_score_max,302
+setup,dr_step3,events,409
+setup,dr_step3,base_rate,0.27158
+setup,dr_step3,folds,5
+setup,dr_step3,seed,42
+setup,dr_step5,universe,17745
+setup,dr_step5,trained,17745
+setup,dr_step5,scored,17745
+setup,dr_step5,fold_train_min,
+setup,dr_step5,fold_train_max,
+setup,dr_step5,fold_score_min,
+setup,dr_step5,fold_score_max,
+setup,dr_step5,events,
+setup,dr_step5,base_rate,
+setup,dr_step5,folds,
+setup,dr_step5,seed,
+dedup,Open Targets parquet,rows,78725
+dedup,Open Targets parquet,unique_ids,78725
+dedup,Open Targets parquet,duplicate_ids,0
+dedup,Open Targets parquet,rows_with_symbol,
+dedup,Open Targets parquet,unique_symbols,
+dedup,Open Targets parquet,duplicate_symbols,
+dedup,Drugged-only predictions,rows,1564
+dedup,Drugged-only predictions,unique_ids,1564
+dedup,Drugged-only predictions,duplicate_ids,0
+dedup,Drugged-only predictions,rows_with_symbol,73
+dedup,Drugged-only predictions,unique_symbols,73
+dedup,Drugged-only predictions,duplicate_symbols,0
+dedup,DR+PU predictions,rows,17745
+dedup,DR+PU predictions,unique_ids,17745
+dedup,DR+PU predictions,duplicate_ids,0
+dedup,DR+PU predictions,rows_with_symbol,17745
+dedup,DR+PU predictions,unique_symbols,17745
+dedup,DR+PU predictions,duplicate_symbols,0
+dedup,data/demo/genes.json,rows,19155
+dedup,data/demo/genes.json,unique_ids,
+dedup,data/demo/genes.json,duplicate_ids,
+dedup,data/demo/genes.json,rows_with_symbol,19155
+dedup,data/demo/genes.json,unique_symbols,19155
+dedup,data/demo/genes.json,duplicate_symbols,0
+stage,Open Targets file|0.25,genes,28
+stage,Open Targets file|0.25,positive,8
+stage,Open Targets file|0.25,drugged_safe,20
+stage,Open Targets file|0.25,unlabeled,0
+stage,Open Targets file|0.25,flag_rate,0.285714
+stage,Open Targets file|0.5,genes,296
+stage,Open Targets file|0.5,positive,59
+stage,Open Targets file|0.5,drugged_safe,237
+stage,Open Targets file|0.5,unlabeled,0
+stage,Open Targets file|0.5,flag_rate,0.199324
+stage,Open Targets file|0.75,genes,222
+stage,Open Targets file|0.75,positive,61
+stage,Open Targets file|0.75,drugged_safe,161
+stage,Open Targets file|0.75,unlabeled,0
+stage,Open Targets file|0.75,flag_rate,0.274775
+stage,Open Targets file|1.0,genes,1018
+stage,Open Targets file|1.0,positive,287
+stage,Open Targets file|1.0,drugged_safe,731
+stage,Open Targets file|1.0,unlabeled,0
+stage,Open Targets file|1.0,flag_rate,0.281925
+stage,Open Targets file|none,genes,77161
+stage,Open Targets file|none,positive,530
+stage,Open Targets file|none,drugged_safe,0
+stage,Open Targets file|none,unlabeled,76631
+stage,Open Targets file|none,flag_rate,0.00686875
+stage,Open Targets file|all,genes,78725
+stage,Open Targets file|all,positive,945
+stage,Open Targets file|all,drugged_safe,1149
+stage,Open Targets file|all,unlabeled,76631
+stage,Open Targets file|all,flag_rate,0.0120038
+stage,DR+PU file|0.25,genes,27
+stage,DR+PU file|0.25,positive,8
+stage,DR+PU file|0.25,drugged_safe,19
+stage,DR+PU file|0.25,unlabeled,0
+stage,DR+PU file|0.25,flag_rate,0.296296
+stage,DR+PU file|0.5,genes,268
+stage,DR+PU file|0.5,positive,56
+stage,DR+PU file|0.5,drugged_safe,212
+stage,DR+PU file|0.5,unlabeled,0
+stage,DR+PU file|0.5,flag_rate,0.208955
+stage,DR+PU file|0.75,genes,212
+stage,DR+PU file|0.75,positive,61
+stage,DR+PU file|0.75,drugged_safe,151
+stage,DR+PU file|0.75,unlabeled,0
+stage,DR+PU file|0.75,flag_rate,0.287736
+stage,DR+PU file|1.0,genes,999
+stage,DR+PU file|1.0,positive,284
+stage,DR+PU file|1.0,drugged_safe,715
+stage,DR+PU file|1.0,unlabeled,0
+stage,DR+PU file|1.0,flag_rate,0.284284
+stage,DR+PU file|none,genes,16239
+stage,DR+PU file|none,positive,508
+stage,DR+PU file|none,drugged_safe,0
+stage,DR+PU file|none,unlabeled,15731
+stage,DR+PU file|none,flag_rate,0.0312827
+stage,DR+PU file|all,genes,17745
+stage,DR+PU file|all,positive,917
+stage,DR+PU file|all,drugged_safe,1097
+stage,DR+PU file|all,unlabeled,15731
+stage,DR+PU file|all,flag_rate,0.0516765
+driver,flagged as driver,genes,95
+driver,flagged as driver,flagged,44
+driver,flagged as driver,not_flagged,51
+driver,flagged as driver,flag_rate,0.463158
+driver,not flagged as driver,genes,1469
+driver,not flagged as driver,flagged,371
+driver,not flagged as driver,not_flagged,1098
+driver,not flagged as driver,flag_rate,0.252553
+driver,all drugged genes,genes,1564
+driver,all drugged genes,flagged,415
+driver,all drugged genes,not_flagged,1149
+driver,all drugged genes,flag_rate,0.265345
+results,drugged_only|all,genes,1564
+results,drugged_only|all,events,415
+results,drugged_only|all,base_rate,0.265345
+results,drugged_only|all,shown,True
+results,drugged_only|all,auroc,0.717138
+results,drugged_only|all,auroc_lo,0.688731
+results,drugged_only|all,auroc_hi,0.747019
+results,drugged_only|all,auprc,0.469953
+results,drugged_only|all,auprc_lo,0.422118
+results,drugged_only|all,auprc_hi,0.52549
+results,drugged_only|all,draws_used,2000
+results,dr_step3|all,genes,1506
+results,dr_step3|all,events,409
+results,dr_step3|all,base_rate,0.27158
+results,dr_step3|all,shown,True
+results,dr_step3|all,auroc,0.727423
+results,dr_step3|all,auroc_lo,0.700722
+results,dr_step3|all,auroc_hi,0.753683
+results,dr_step3|all,auprc,0.454204
+results,dr_step3|all,auprc_lo,0.411363
+results,dr_step3|all,auprc_hi,0.508559
+results,dr_step3|all,draws_used,2000
+results,dr_step1|all,genes,17745
+results,dr_step1|all,events,1506
+results,dr_step1|all,base_rate,0.084869
+results,dr_step1|all,shown,True
+results,dr_step1|all,auroc,0.915082
+results,dr_step1|all,auroc_lo,0.906733
+results,dr_step1|all,auroc_hi,0.92268
+results,dr_step1|all,auprc,0.599939
+results,dr_step1|all,auprc_lo,0.574466
+results,dr_step1|all,auprc_hi,0.625017
+results,dr_step1|all,draws_used,2000
+results,dr_und_outcome|all,genes,16239
+results,dr_und_outcome|all,events,508
+results,dr_und_outcome|all,base_rate,0.0312827
+results,dr_und_outcome|all,shown,True
+results,dr_und_outcome|all,auroc,0.72171
+results,dr_und_outcome|all,auroc_lo,0.69753
+results,dr_und_outcome|all,auroc_hi,0.744234
+results,dr_und_outcome|all,auprc,0.0882745
+results,dr_und_outcome|all,auprc_lo,0.0760468
+results,dr_und_outcome|all,auprc_hi,0.10561
+results,dr_und_outcome|all,draws_used,2000
+results,dr_und_deployed|all,genes,16239
+results,dr_und_deployed|all,events,508
+results,dr_und_deployed|all,base_rate,0.0312827
+results,dr_und_deployed|all,shown,True
+results,dr_und_deployed|all,auroc,0.635652
+results,dr_und_deployed|all,auroc_lo,0.610991
+results,dr_und_deployed|all,auroc_hi,0.662482
+results,dr_und_deployed|all,auprc,0.0725973
+results,dr_und_deployed|all,auprc_lo,0.0610053
+results,dr_und_deployed|all,auprc_hi,0.089139
+results,dr_und_deployed|all,draws_used,2000
+results,drugged_only|0.25,genes,28
+results,drugged_only|0.25,events,8
+results,drugged_only|0.25,base_rate,0.285714
+results,drugged_only|0.25,shown,False
+results,drugged_only|0.25,auroc,
+results,drugged_only|0.25,auroc_lo,
+results,drugged_only|0.25,auroc_hi,
+results,drugged_only|0.25,auprc,
+results,drugged_only|0.25,auprc_lo,
+results,drugged_only|0.25,auprc_hi,
+results,drugged_only|0.25,draws_used,
+results,drugged_only|0.5,genes,296
+results,drugged_only|0.5,events,59
+results,drugged_only|0.5,base_rate,0.199324
+results,drugged_only|0.5,shown,True
+results,drugged_only|0.5,auroc,0.577094
+results,drugged_only|0.5,auroc_lo,0.494496
+results,drugged_only|0.5,auroc_hi,0.662401
+results,drugged_only|0.5,auprc,0.262773
+results,drugged_only|0.5,auprc_lo,0.18965
+results,drugged_only|0.5,auprc_hi,0.375957
+results,drugged_only|0.5,draws_used,2000
+results,drugged_only|0.75,genes,222
+results,drugged_only|0.75,events,61
+results,drugged_only|0.75,base_rate,0.274775
+results,drugged_only|0.75,shown,True
+results,drugged_only|0.75,auroc,0.699012
+results,drugged_only|0.75,auroc_lo,0.621511
+results,drugged_only|0.75,auroc_hi,0.772068
+results,drugged_only|0.75,auprc,0.445415
+results,drugged_only|0.75,auprc_lo,0.343867
+results,drugged_only|0.75,auprc_hi,0.584471
+results,drugged_only|0.75,draws_used,2000
+results,drugged_only|1.0,genes,1018
+results,drugged_only|1.0,events,287
+results,drugged_only|1.0,base_rate,0.281925
+results,drugged_only|1.0,shown,True
+results,drugged_only|1.0,auroc,0.752072
+results,drugged_only|1.0,auroc_lo,0.721271
+results,drugged_only|1.0,auroc_hi,0.784392
+results,drugged_only|1.0,auprc,0.534852
+results,drugged_only|1.0,auprc_lo,0.477424
+results,drugged_only|1.0,auprc_hi,0.595997
+results,drugged_only|1.0,draws_used,2000
+results,dr_step3|0.25,genes,27
+results,dr_step3|0.25,events,8
+results,dr_step3|0.25,base_rate,0.296296
+results,dr_step3|0.25,shown,False
+results,dr_step3|0.25,auroc,
+results,dr_step3|0.25,auroc_lo,
+results,dr_step3|0.25,auroc_hi,
+results,dr_step3|0.25,auprc,
+results,dr_step3|0.25,auprc_lo,
+results,dr_step3|0.25,auprc_hi,
+results,dr_step3|0.25,draws_used,
+results,dr_step3|0.5,genes,268
+results,dr_step3|0.5,events,56
+results,dr_step3|0.5,base_rate,0.208955
+results,dr_step3|0.5,shown,True
+results,dr_step3|0.5,auroc,0.615145
+results,dr_step3|0.5,auroc_lo,0.535627
+results,dr_step3|0.5,auroc_hi,0.692974
+results,dr_step3|0.5,auprc,0.275726
+results,dr_step3|0.5,auprc_lo,0.209577
+results,dr_step3|0.5,auprc_hi,0.384944
+results,dr_step3|0.5,draws_used,2000
+results,dr_step3|0.75,genes,212
+results,dr_step3|0.75,events,61
+results,dr_step3|0.75,base_rate,0.287736
+results,dr_step3|0.75,shown,True
+results,dr_step3|0.75,auroc,0.684942
+results,dr_step3|0.75,auroc_lo,0.604407
+results,dr_step3|0.75,auroc_hi,0.760643
+results,dr_step3|0.75,auprc,0.440482
+results,dr_step3|0.75,auprc_lo,0.333553
+results,dr_step3|0.75,auprc_hi,0.562568
+results,dr_step3|0.75,draws_used,2000
+results,dr_step3|1.0,genes,999
+results,dr_step3|1.0,events,284
+results,dr_step3|1.0,base_rate,0.284284
+results,dr_step3|1.0,shown,True
+results,dr_step3|1.0,auroc,0.761538
+results,dr_step3|1.0,auroc_lo,0.730877
+results,dr_step3|1.0,auroc_hi,0.793674
+results,dr_step3|1.0,auprc,0.518493
+results,dr_step3|1.0,auprc_lo,0.46435
+results,dr_step3|1.0,auprc_hi,0.581875
+results,dr_step3|1.0,draws_used,2000
+results,dr_deployed_drugged|all,genes,1506
+results,dr_deployed_drugged|all,events,409
+results,dr_deployed_drugged|all,base_rate,0.27158
+results,dr_deployed_drugged|all,shown,False
+results,dr_deployed_drugged|all,auroc,1
+results,dr_deployed_drugged|all,auroc_lo,
+results,dr_deployed_drugged|all,auroc_hi,
+results,dr_deployed_drugged|all,auprc,1
+results,dr_deployed_drugged|all,auprc_lo,
+results,dr_deployed_drugged|all,auprc_hi,
+results,dr_deployed_drugged|all,draws_used,
+paired,0,auroc_1,0.714599
+paired,0,auroc_2,0.727423
+paired,0,auroc_diff,0.0128234
+paired,0,auroc_diff_lo,-0.0084661
+paired,0,auroc_diff_hi,0.0349162
+paired,0,auprc_1,0.473117
+paired,0,auprc_2,0.454204
+paired,0,auprc_diff,-0.0189121
+paired,0,auprc_diff_lo,-0.061561
+paired,0,auprc_diff_hi,0.0264989
+paired,0,draws_used,2000
+paired,0,genes,1506
+paired,0,events,409
+paired,0,base_rate,0.27158
+shap,mouseKOScore,rank,1
+shap,mouseKOScore,group,Open Targets
+shap,mouseKOScore,mean_abs_shap,0.768319
+shap,mouseKOScore,share,0.17853
+shap,geneticConstraint,rank,2
+shap,geneticConstraint,group,Open Targets
+shap,geneticConstraint,mean_abs_shap,0.527364
+shap,geneticConstraint,share,0.122541
+shap,mouseOrthologMaxIdentityPercentage,rank,3
+shap,mouseOrthologMaxIdentityPercentage,group,Open Targets
+shap,mouseOrthologMaxIdentityPercentage,mean_abs_shap,0.517106
+shap,mouseOrthologMaxIdentityPercentage,share,0.120157
+shap,hasSmallMoleculeBinder,rank,4
+shap,hasSmallMoleculeBinder,group,Open Targets
+shap,hasSmallMoleculeBinder,mean_abs_shap,0.4403
+shap,hasSmallMoleculeBinder,share,0.10231
+shap,hasHighQualityChemicalProbes,rank,5
+shap,hasHighQualityChemicalProbes,group,Open Targets
+shap,hasHighQualityChemicalProbes,mean_abs_shap,0.329073
+shap,hasHighQualityChemicalProbes,share,0.076465
+shap,paralogMaxIdentityPercentage,rank,6
+shap,paralogMaxIdentityPercentage,group,Open Targets
+shap,paralogMaxIdentityPercentage,mean_abs_shap,0.324911
+shap,paralogMaxIdentityPercentage,share,0.0754978
+shap,hasLigand,rank,7
+shap,hasLigand,group,Open Targets
+shap,hasLigand,mean_abs_shap,0.315223
+shap,hasLigand,share,0.0732466
+shap,tissueSpecificity,rank,8
+shap,tissueSpecificity,group,Open Targets
+shap,tissueSpecificity,mean_abs_shap,0.223026
+shap,tissueSpecificity,share,0.0518234
+shap,hasPocket,rank,9
+shap,hasPocket,group,Open Targets
+shap,hasPocket,mean_abs_shap,0.212375
+shap,hasPocket,share,0.0493484
+shap,tissueDistribution,rank,10
+shap,tissueDistribution,group,Open Targets
+shap,tissueDistribution,mean_abs_shap,0.174336
+shap,tissueDistribution,share,0.0405095
+shap,isInMembrane,rank,11
+shap,isInMembrane,group,Open Targets
+shap,isInMembrane,mean_abs_shap,0.165493
+shap,isInMembrane,share,0.0384548
+shap,isSecreted,rank,12
+shap,isSecreted,group,Open Targets
+shap,isSecreted,mean_abs_shap,0.0889317
+shap,isSecreted,share,0.0206646
+shap,plof_respiratory_min_p,rank,13
+shap,plof_respiratory_min_p,group,pLoF
+shap,plof_respiratory_min_p,mean_abs_shap,0.016589
+shap,plof_respiratory_min_p,share,0.00385471
+shap,expr_organ_Heart,rank,14
+shap,expr_organ_Heart,group,Expression
+shap,expr_organ_Heart,mean_abs_shap,0.0163379
+shap,expr_organ_Heart,share,0.00379636
+shap,isCancerDriverGene,rank,15
+shap,isCancerDriverGene,group,Open Targets
+shap,isCancerDriverGene,mean_abs_shap,0.0159072
+shap,isCancerDriverGene,share,0.00369627
+shap,plof_musculoskeletal_max_beta,rank,16
+shap,plof_musculoskeletal_max_beta,group,pLoF
+shap,plof_musculoskeletal_max_beta,mean_abs_shap,0.0137908
+shap,plof_musculoskeletal_max_beta,share,0.00320451
+shap,expr_lymph_tcell,rank,17
+shap,expr_lymph_tcell,group,Expression
+shap,expr_lymph_tcell,mean_abs_shap,0.0101961
+shap,expr_lymph_tcell,share,0.00236922
+shap,plof_n_phenotypes,rank,18
+shap,plof_n_phenotypes,group,pLoF
+shap,plof_n_phenotypes,mean_abs_shap,0.0100335
+shap,plof_n_phenotypes,share,0.00233143
+shap,loeuf_score,rank,19
+shap,loeuf_score,group,LOEUF
+shap,loeuf_score,mean_abs_shap,0.00881589
+shap,loeuf_score,share,0.0020485
+shap,expr_bm_erythroblasts,rank,20
+shap,expr_bm_erythroblasts,group,Expression
+shap,expr_bm_erythroblasts,mean_abs_shap,0.00858697
+shap,expr_bm_erythroblasts,share,0.00199531
+shap,plof_hematologic_max_beta,rank,21
+shap,plof_hematologic_max_beta,group,pLoF
+shap,plof_hematologic_max_beta,mean_abs_shap,0.0074422
+shap,plof_hematologic_max_beta,share,0.00172931
+shap,expr_lung_type2,rank,22
+shap,expr_lung_type2,group,Expression
+shap,expr_lung_type2,mean_abs_shap,0.0073641
+shap,expr_lung_type2,share,0.00171116
+shap,expr_brain_neurons_pct,rank,23
+shap,expr_brain_neurons_pct,group,Expression
+shap,expr_brain_neurons_pct,mean_abs_shap,0.00649248
+shap,expr_brain_neurons_pct,share,0.00150862
+shap,plof_min_pval,rank,24
+shap,plof_min_pval,group,pLoF
+shap,plof_min_pval,mean_abs_shap,0.00577475
+shap,plof_min_pval,share,0.00134185
+shap,expr_brain_microglia,rank,25
+shap,expr_brain_microglia,group,Expression
+shap,expr_brain_microglia,mean_abs_shap,0.00454507
+shap,expr_brain_microglia,share,0.00105612
+shap,hasTEP,rank,26
+shap,hasTEP,group,Open Targets
+shap,hasTEP,mean_abs_shap,0.00433754
+shap,hasTEP,share,0.00100789
+shap,expr_brain_neurons,rank,27
+shap,expr_brain_neurons,group,Expression
+shap,expr_brain_neurons,mean_abs_shap,0.00429791
+shap,expr_brain_neurons,share,0.000998682
+shap,plof_cardiovascular_min_p,rank,28
+shap,plof_cardiovascular_min_p,group,pLoF
+shap,plof_cardiovascular_min_p,mean_abs_shap,0.00390067
+shap,plof_cardiovascular_min_p,share,0.000906379
+shap,plof_hematologic_min_p,rank,29
+shap,plof_hematologic_min_p,group,pLoF
+shap,plof_hematologic_min_p,mean_abs_shap,0.00373712
+shap,plof_hematologic_min_p,share,0.000868375
+shap,expr_heart_cardiomyocytes,rank,30
+shap,expr_heart_cardiomyocytes,group,Expression
+shap,expr_heart_cardiomyocytes,mean_abs_shap,0.00351223
+shap,expr_heart_cardiomyocytes,share,0.000816118
+shap,expr_organ_Muscle,rank,31
+shap,expr_organ_Muscle,group,Expression
+shap,expr_organ_Muscle,mean_abs_shap,0.00340343
+shap,expr_organ_Muscle,share,0.000790838
+shap,expr_liver_hepatocytes,rank,32
+shap,expr_liver_hepatocytes,group,Expression
+shap,expr_liver_hepatocytes,mean_abs_shap,0.00326874
+shap,expr_liver_hepatocytes,share,0.00075954
+shap,expr_organ_Pancreas,rank,33
+shap,expr_organ_Pancreas,group,Expression
+shap,expr_organ_Pancreas,mean_abs_shap,0.00311136
+shap,expr_organ_Pancreas,share,0.000722971
+shap,plof_respiratory_max_beta,rank,34
+shap,plof_respiratory_max_beta,group,pLoF
+shap,plof_respiratory_max_beta,mean_abs_shap,0.00300092
+shap,plof_respiratory_max_beta,share,0.000697308
+shap,expr_muscle_skeletal,rank,35
+shap,expr_muscle_skeletal,group,Expression
+shap,expr_muscle_skeletal,mean_abs_shap,0.00285865
+shap,expr_muscle_skeletal,share,0.00066425
+shap,expr_organ_Intestine,rank,36
+shap,expr_organ_Intestine,group,Expression
+shap,expr_organ_Intestine,mean_abs_shap,0.00276756
+shap,expr_organ_Intestine,share,0.000643084
+shap,expr_organ_Breast,rank,37
+shap,expr_organ_Breast,group,Expression
+shap,expr_organ_Breast,mean_abs_shap,0.00266407
+shap,expr_organ_Breast,share,0.000619037
+shap,plof_max_abs_beta,rank,38
+shap,plof_max_abs_beta,group,pLoF
+shap,plof_max_abs_beta,mean_abs_shap,0.00253624
+shap,plof_max_abs_beta,share,0.000589332
+shap,expr_organ_Bone marrow,rank,39
+shap,expr_organ_Bone marrow,group,Expression
+shap,expr_organ_Bone marrow,mean_abs_shap,0.002529
+shap,expr_organ_Bone marrow,share,0.000587651
+shap,expr_kidney_proximal,rank,40
+shap,expr_kidney_proximal,group,Expression
+shap,expr_kidney_proximal,mean_abs_shap,0.00218174
+shap,expr_kidney_proximal,share,0.000506959
+shap,expr_bm_megakaryocytes_pct,rank,41
+shap,expr_bm_megakaryocytes_pct,group,Expression
+shap,expr_bm_megakaryocytes_pct,mean_abs_shap,0.00217027
+shap,expr_bm_megakaryocytes_pct,share,0.000504295
+shap,plof_cardiovascular_max_beta,rank,42
+shap,plof_cardiovascular_max_beta,group,pLoF
+shap,plof_cardiovascular_max_beta,mean_abs_shap,0.00213008
+shap,plof_cardiovascular_max_beta,share,0.000494956
+shap,expr_organ_Liver,rank,43
+shap,expr_organ_Liver,group,Expression
+shap,expr_organ_Liver,mean_abs_shap,0.00201083
+shap,expr_organ_Liver,share,0.000467245
+shap,expr_organ_Adrenal,rank,44
+shap,expr_organ_Adrenal,group,Expression
+shap,expr_organ_Adrenal,mean_abs_shap,0.0019181
+shap,expr_organ_Adrenal,share,0.000445699
+shap,plof_neurological_min_p,rank,45
+shap,plof_neurological_min_p,group,pLoF
+shap,plof_neurological_min_p,mean_abs_shap,0.0018867
+shap,plof_neurological_min_p,share,0.000438401
+shap,expr_bm_megakaryocytes,rank,46
+shap,expr_bm_megakaryocytes,group,Expression
+shap,expr_bm_megakaryocytes,mean_abs_shap,0.00186775
+shap,expr_bm_megakaryocytes,share,0.000433998
+shap,plof_musculoskeletal_min_p,rank,47
+shap,plof_musculoskeletal_min_p,group,pLoF
+shap,plof_musculoskeletal_min_p,mean_abs_shap,0.00183939
+shap,plof_musculoskeletal_min_p,share,0.000427409
+shap,plof_neurological_max_beta,rank,48
+shap,plof_neurological_max_beta,group,pLoF
+shap,plof_neurological_max_beta,mean_abs_shap,0.00175194
+shap,plof_neurological_max_beta,share,0.000407089
+shap,expr_muscle_skeletal_pct,rank,49
+shap,expr_muscle_skeletal_pct,group,Expression
+shap,expr_muscle_skeletal_pct,mean_abs_shap,0.0014915
+shap,expr_muscle_skeletal_pct,share,0.000346573
+shap,expr_organ_Lymph node,rank,50
+shap,expr_organ_Lymph node,group,Expression
+shap,expr_organ_Lymph node,mean_abs_shap,0.00147075
+shap,expr_organ_Lymph node,share,0.000341751
+shap,expr_lymph_tcell_pct,rank,51
+shap,expr_lymph_tcell_pct,group,Expression
+shap,expr_lymph_tcell_pct,mean_abs_shap,0.00146947
+shap,expr_lymph_tcell_pct,share,0.000341452
+shap,expr_organ_Lung,rank,52
+shap,expr_organ_Lung,group,Expression
+shap,expr_organ_Lung,mean_abs_shap,0.00138635
+shap,expr_organ_Lung,share,0.00032214
+shap,expr_lung_type1_pct,rank,53
+shap,expr_lung_type1_pct,group,Expression
+shap,expr_lung_type1_pct,mean_abs_shap,0.00138475
+shap,expr_lung_type1_pct,share,0.000321766
+shap,expr_lung_type1,rank,54
+shap,expr_lung_type1,group,Expression
+shap,expr_lung_type1,mean_abs_shap,0.00137112
+shap,expr_lung_type1,share,0.0003186
+shap,expr_bm_erythroblasts_pct,rank,55
+shap,expr_bm_erythroblasts_pct,group,Expression
+shap,expr_bm_erythroblasts_pct,mean_abs_shap,0.00135538
+shap,expr_bm_erythroblasts_pct,share,0.000314942
+shap,expr_pancreas_beta,rank,56
+shap,expr_pancreas_beta,group,Expression
+shap,expr_pancreas_beta,mean_abs_shap,0.00127135
+shap,expr_pancreas_beta,share,0.000295418
+shap,expr_heart_cardiomyocytes_pct,rank,57
+shap,expr_heart_cardiomyocytes_pct,group,Expression
+shap,expr_heart_cardiomyocytes_pct,mean_abs_shap,0.00117952
+shap,expr_heart_cardiomyocytes_pct,share,0.000274079
+shap,expr_organ_Brain,rank,58
+shap,expr_organ_Brain,group,Expression
+shap,expr_organ_Brain,mean_abs_shap,0.00112113
+shap,expr_organ_Brain,share,0.00026051
+shap,plof_renal_min_p,rank,59
+shap,plof_renal_min_p,group,pLoF
+shap,plof_renal_min_p,mean_abs_shap,0.00102083
+shap,plof_renal_min_p,share,0.000237206
+shap,expr_organ_Kidney,rank,60
+shap,expr_organ_Kidney,group,Expression
+shap,expr_organ_Kidney,mean_abs_shap,0.000976776
+shap,expr_organ_Kidney,share,0.000226968
+shap,plof_hepatic_max_beta,rank,61
+shap,plof_hepatic_max_beta,group,pLoF
+shap,plof_hepatic_max_beta,mean_abs_shap,0.00094438
+shap,plof_hepatic_max_beta,share,0.000219441
+shap,expr_liver_hepatocytes_pct,rank,62
+shap,expr_liver_hepatocytes_pct,group,Expression
+shap,expr_liver_hepatocytes_pct,mean_abs_shap,0.000910063
+shap,expr_liver_hepatocytes_pct,share,0.000211467
+shap,expr_organ_Spleen,rank,63
+shap,expr_organ_Spleen,group,Expression
+shap,expr_organ_Spleen,mean_abs_shap,0.000761253
+shap,expr_organ_Spleen,share,0.000176888
+shap,plof_renal_max_beta,rank,64
+shap,plof_renal_max_beta,group,pLoF
+shap,plof_renal_max_beta,mean_abs_shap,0.000687419
+shap,plof_renal_max_beta,share,0.000159732
+shap,expr_organ_Skin,rank,65
+shap,expr_organ_Skin,group,Expression
+shap,expr_organ_Skin,mean_abs_shap,0.000662611
+shap,expr_organ_Skin,share,0.000153967
+shap,expr_brain_microglia_pct,rank,66
+shap,expr_brain_microglia_pct,group,Expression
+shap,expr_brain_microglia_pct,mean_abs_shap,0.000579285
+shap,expr_brain_microglia_pct,share,0.000134605
+shap,expr_lung_type2_pct,rank,67
+shap,expr_lung_type2_pct,group,Expression
+shap,expr_lung_type2_pct,mean_abs_shap,0.000461466
+shap,expr_lung_type2_pct,share,0.000107228
+shap,plof_hepatic_min_p,rank,68
+shap,plof_hepatic_min_p,group,pLoF
+shap,plof_hepatic_min_p,mean_abs_shap,0.000456051
+shap,plof_hepatic_min_p,share,0.00010597
+shap,expr_pancreas_beta_pct,rank,69
+shap,expr_pancreas_beta_pct,group,Expression
+shap,expr_pancreas_beta_pct,mean_abs_shap,0.000351296
+shap,expr_pancreas_beta_pct,share,8.16287e-05
+shap,expr_kidney_proximal_pct,rank,70
+shap,expr_kidney_proximal_pct,group,Expression
+shap,expr_kidney_proximal_pct,mean_abs_shap,0.000250907
+shap,expr_kidney_proximal_pct,share,5.83019e-05
+shap,plof_n_sig,rank,71
+shap,plof_n_sig,group,pLoF
+shap,plof_n_sig,mean_abs_shap,0
+shap,plof_n_sig,share,0
+groups,Open Targets,columns,14
+groups,Open Targets,detail,14 columns
+groups,Open Targets,mean_abs_shap,4.1067
+groups,Open Targets,share,0.954253
+groups,Open Targets,top_feature,mouseKOScore
+groups,Open Targets,top_value,0.768319
+groups,LOEUF,columns,1
+groups,LOEUF,detail,1 column
+groups,LOEUF,mean_abs_shap,0.00881589
+groups,LOEUF,share,0.0020485
+groups,LOEUF,top_feature,loeuf_score
+groups,LOEUF,top_value,0.00881589
+groups,pLoF,columns,18
+groups,pLoF,detail,4 global and 14 by organ system
+groups,pLoF,mean_abs_shap,0.0775221
+groups,pLoF,share,0.0180134
+groups,pLoF,top_feature,plof_respiratory_min_p
+groups,pLoF,top_value,0.016589
+groups,Expression,columns,38
+groups,Expression,detail,"24 cell type (12 mean, 12 percent expressing) and 14 by organ"
+groups,Expression,mean_abs_shap,0.110539
+groups,Expression,share,0.0256854
+groups,Expression,top_feature,expr_organ_Heart
+groups,Expression,top_value,0.0163379
+columns,mouseKOScore,shap_rank,1
+columns,mouseKOScore,mean_abs_shap,0.768319
+columns,mouseKOScore,basis,genes with a value
+columns,mouseKOScore,genes,1300
+columns,mouseKOScore,present,
+columns,mouseKOScore,flagged,388
+columns,mouseKOScore,shown,True
+columns,mouseKOScore,auroc,0.377025
+columns,mouseKOScore,auroc_lo,0.346355
+columns,mouseKOScore,auroc_hi,0.410195
+columns,geneticConstraint,shap_rank,2
+columns,geneticConstraint,mean_abs_shap,0.527364
+columns,geneticConstraint,basis,genes with a value
+columns,geneticConstraint,genes,1470
+columns,geneticConstraint,present,
+columns,geneticConstraint,flagged,401
+columns,geneticConstraint,shown,True
+columns,geneticConstraint,auroc,0.451197
+columns,geneticConstraint,auroc_lo,0.417347
+columns,geneticConstraint,auroc_hi,0.48314
+columns,mouseOrthologMaxIdentityPercentage,shap_rank,3
+columns,mouseOrthologMaxIdentityPercentage,mean_abs_shap,0.517106
+columns,mouseOrthologMaxIdentityPercentage,basis,genes with a value
+columns,mouseOrthologMaxIdentityPercentage,genes,1485
+columns,mouseOrthologMaxIdentityPercentage,present,
+columns,mouseOrthologMaxIdentityPercentage,flagged,406
+columns,mouseOrthologMaxIdentityPercentage,shown,True
+columns,mouseOrthologMaxIdentityPercentage,auroc,0.523428
+columns,mouseOrthologMaxIdentityPercentage,auroc_lo,0.492956
+columns,mouseOrthologMaxIdentityPercentage,auroc_hi,0.552914
+columns,hasSmallMoleculeBinder,shap_rank,4
+columns,hasSmallMoleculeBinder,mean_abs_shap,0.4403
+columns,hasSmallMoleculeBinder,basis,genes with a value
+columns,hasSmallMoleculeBinder,genes,1545
+columns,hasSmallMoleculeBinder,present,
+columns,hasSmallMoleculeBinder,flagged,413
+columns,hasSmallMoleculeBinder,shown,True
+columns,hasSmallMoleculeBinder,auroc,0.63586
+columns,hasSmallMoleculeBinder,auroc_lo,0.616589
+columns,hasSmallMoleculeBinder,auroc_hi,0.655069
+columns,hasHighQualityChemicalProbes,shap_rank,5
+columns,hasHighQualityChemicalProbes,mean_abs_shap,0.329073
+columns,hasHighQualityChemicalProbes,basis,genes with a value
+columns,hasHighQualityChemicalProbes,genes,502
+columns,hasHighQualityChemicalProbes,present,
+columns,hasHighQualityChemicalProbes,flagged,222
+columns,hasHighQualityChemicalProbes,shown,True
+columns,hasHighQualityChemicalProbes,auroc,0.5199
+columns,hasHighQualityChemicalProbes,auroc_lo,0.480008
+columns,hasHighQualityChemicalProbes,auroc_hi,0.562072
+columns,paralogMaxIdentityPercentage,shap_rank,6
+columns,paralogMaxIdentityPercentage,mean_abs_shap,0.324911
+columns,paralogMaxIdentityPercentage,basis,genes with a value
+columns,paralogMaxIdentityPercentage,genes,1355
+columns,paralogMaxIdentityPercentage,present,
+columns,paralogMaxIdentityPercentage,flagged,389
+columns,paralogMaxIdentityPercentage,shown,True
+columns,paralogMaxIdentityPercentage,auroc,0.48962
+columns,paralogMaxIdentityPercentage,auroc_lo,0.461989
+columns,paralogMaxIdentityPercentage,auroc_hi,0.516228
+columns,hasLigand,shap_rank,7
+columns,hasLigand,mean_abs_shap,0.315223
+columns,hasLigand,basis,genes with a value
+columns,hasLigand,genes,1545
+columns,hasLigand,present,
+columns,hasLigand,flagged,413
+columns,hasLigand,shown,True
+columns,hasLigand,auroc,0.634942
+columns,hasLigand,auroc_lo,0.612292
+columns,hasLigand,auroc_hi,0.656214
+columns,tissueSpecificity,shap_rank,8
+columns,tissueSpecificity,mean_abs_shap,0.223026
+columns,tissueSpecificity,basis,genes with a value
+columns,tissueSpecificity,genes,1523
+columns,tissueSpecificity,present,
+columns,tissueSpecificity,flagged,411
+columns,tissueSpecificity,shown,True
+columns,tissueSpecificity,auroc,0.521004
+columns,tissueSpecificity,auroc_lo,0.490049
+columns,tissueSpecificity,auroc_hi,0.550717
+columns,hasPocket,shap_rank,9
+columns,hasPocket,mean_abs_shap,0.212375
+columns,hasPocket,basis,genes with a value
+columns,hasPocket,genes,1545
+columns,hasPocket,present,
+columns,hasPocket,flagged,413
+columns,hasPocket,shown,True
+columns,hasPocket,auroc,0.591343
+columns,hasPocket,auroc_lo,0.567393
+columns,hasPocket,auroc_hi,0.616912
+columns,tissueDistribution,shap_rank,10
+columns,tissueDistribution,mean_abs_shap,0.174336
+columns,tissueDistribution,basis,genes with a value
+columns,tissueDistribution,genes,1523
+columns,tissueDistribution,present,
+columns,tissueDistribution,flagged,411
+columns,tissueDistribution,shown,True
+columns,tissueDistribution,auroc,0.536212
+columns,tissueDistribution,auroc_lo,0.507122
+columns,tissueDistribution,auroc_hi,0.566738
+columns,isInMembrane,shap_rank,11
+columns,isInMembrane,mean_abs_shap,0.165493
+columns,isInMembrane,basis,genes with a value
+columns,isInMembrane,genes,1539
+columns,isInMembrane,present,
+columns,isInMembrane,flagged,409
+columns,isInMembrane,shown,True
+columns,isInMembrane,auroc,0.560255
+columns,isInMembrane,auroc_lo,0.530546
+columns,isInMembrane,auroc_hi,0.587492
+columns,isSecreted,shap_rank,12
+columns,isSecreted,mean_abs_shap,0.0889317
+columns,isSecreted,basis,genes with a value
+columns,isSecreted,genes,1539
+columns,isSecreted,present,
+columns,isSecreted,flagged,409
+columns,isSecreted,shown,True
+columns,isSecreted,auroc,0.477542
+columns,isSecreted,auroc_lo,0.456393
+columns,isSecreted,auroc_hi,0.498795
+columns,isCancerDriverGene,shap_rank,15
+columns,isCancerDriverGene,mean_abs_shap,0.0159072
+columns,isCancerDriverGene,basis,present against empty
+columns,isCancerDriverGene,genes,1564
+columns,isCancerDriverGene,present,95
+columns,isCancerDriverGene,flagged,415
+columns,isCancerDriverGene,shown,True
+columns,isCancerDriverGene,auroc,0.530819
+columns,isCancerDriverGene,auroc_lo,0.515257
+columns,isCancerDriverGene,auroc_hi,0.547096
+columns,hasTEP,shap_rank,26
+columns,hasTEP,mean_abs_shap,0.00433754
+columns,hasTEP,basis,present against empty
+columns,hasTEP,genes,1564
+columns,hasTEP,present,8
+columns,hasTEP,flagged,415
+columns,hasTEP,shown,False
+columns,hasTEP,auroc,
+columns,hasTEP,auroc_lo,
+columns,hasTEP,auroc_hi,
+claims,README.md|440|Step 3 out-of-fold AUROC and AUPRC,stated,0.691 and 0.426
+claims,README.md|440|Step 3 out-of-fold AUROC and AUPRC,files_give,0.727 and 0.454
+claims,README.md|440|Step 3 out-of-fold AUROC and AUPRC,verdict,differs
+claims,Methodology.md|382|Step 3 out-of-fold AUROC and AUPRC,stated,0.691 and 0.426
+claims,Methodology.md|382|Step 3 out-of-fold AUROC and AUPRC,files_give,0.727 and 0.454
+claims,Methodology.md|382|Step 3 out-of-fold AUROC and AUPRC,verdict,differs
+claims,CONTRIBUTING.md|146|Step 3 out-of-fold AUROC and AUPRC,stated,0.691 and 0.426
+claims,CONTRIBUTING.md|146|Step 3 out-of-fold AUROC and AUPRC,files_give,0.727 and 0.454
+claims,CONTRIBUTING.md|146|Step 3 out-of-fold AUROC and AUPRC,verdict,differs
+claims,frontend/src/app/methodology/page.tsx|50|Step 3 out-of-fold AUROC and AUPRC,stated,0.727 and 0.454
+claims,frontend/src/app/methodology/page.tsx|50|Step 3 out-of-fold AUROC and AUPRC,files_give,0.727 and 0.454
+claims,frontend/src/app/methodology/page.tsx|50|Step 3 out-of-fold AUROC and AUPRC,verdict,agrees
+claims,"Methodology.md|350|Prior of step 2, the share of genes with a liability",stated,0.090
+claims,"Methodology.md|350|Prior of step 2, the share of genes with a liability",files_give,"0.40 fixed in the code (line 61), not stored in the saved files"
+claims,"Methodology.md|350|Prior of step 2, the share of genes with a liability",verdict,differs
+claims,"README.md|439|Prior of step 2, the share of genes with a liability",stated,9%
+claims,"README.md|439|Prior of step 2, the share of genes with a liability",files_give,"0.40 fixed in the code (line 61), not stored in the saved files"
+claims,"README.md|439|Prior of step 2, the share of genes with a liability",verdict,differs
+claims,"CONTRIBUTING.md|145|Prior of step 2, the share of genes with a liability",stated,9%
+claims,"CONTRIBUTING.md|145|Prior of step 2, the share of genes with a liability",files_give,"0.40 fixed in the code (line 61), not stored in the saved files"
+claims,"CONTRIBUTING.md|145|Prior of step 2, the share of genes with a liability",verdict,differs
+claims,"frontend/src/app/methodology/page.tsx|37|Prior of step 2, the share of genes with a liability",stated,40%
+claims,"frontend/src/app/methodology/page.tsx|37|Prior of step 2, the share of genes with a liability",files_give,"0.40 fixed in the code (line 61), not stored in the saved files"
+claims,"frontend/src/app/methodology/page.tsx|37|Prior of step 2, the share of genes with a liability",verdict,agrees
+claims,"Methodology.md|419|Mean and standard deviation of the pseudo-outcome, drugged genes",stated,0.17 and 1.00
+claims,"Methodology.md|419|Mean and standard deviation of the pseudo-outcome, drugged genes",files_give,0.01 and 1.02
+claims,"Methodology.md|419|Mean and standard deviation of the pseudo-outcome, drugged genes",verdict,differs
+claims,"Methodology.md|420|Mean and standard deviation of the pseudo-outcome, undrugged genes",stated,0.02 and 0.06
+claims,"Methodology.md|420|Mean and standard deviation of the pseudo-outcome, undrugged genes",files_give,0.04 and 0.10
+claims,"Methodology.md|420|Mean and standard deviation of the pseudo-outcome, undrugged genes",verdict,differs
+claims,"frontend/src/app/methodology/page.tsx|64|Mean and standard deviation of the pseudo-outcome, drugged genes",stated,0.01 and 1.02
+claims,"frontend/src/app/methodology/page.tsx|64|Mean and standard deviation of the pseudo-outcome, drugged genes",files_give,0.01 and 1.02
+claims,"frontend/src/app/methodology/page.tsx|64|Mean and standard deviation of the pseudo-outcome, drugged genes",verdict,agrees
+claims,"frontend/src/app/methodology/page.tsx|64|Mean and standard deviation of the pseudo-outcome, undrugged genes",stated,0.04 and 0.10
+claims,"frontend/src/app/methodology/page.tsx|64|Mean and standard deviation of the pseudo-outcome, undrugged genes",files_give,0.04 and 0.10
+claims,"frontend/src/app/methodology/page.tsx|64|Mean and standard deviation of the pseudo-outcome, undrugged genes",verdict,agrees
+claims,Methodology.md|491|Genes labeled positive among the DB genes,stated,409
+claims,Methodology.md|491|Genes labeled positive among the DB genes,files_give,917
+claims,Methodology.md|491|Genes labeled positive among the DB genes,verdict,differs
+claims,Methodology.md|492|Genes labeled drugged_safe among the DB genes,stated,"1,097"
+claims,Methodology.md|492|Genes labeled drugged_safe among the DB genes,files_give,"1,097"
+claims,Methodology.md|492|Genes labeled drugged_safe among the DB genes,verdict,agrees
+claims,Methodology.md|493|Genes labeled unlabeled among the DB genes,stated,"16,239"
+claims,Methodology.md|493|Genes labeled unlabeled among the DB genes,files_give,"15,731"
+claims,Methodology.md|493|Genes labeled unlabeled among the DB genes,verdict,differs
+claims,Methodology.md|321|Propensity AUROC,stated,0.91
+claims,Methodology.md|321|Propensity AUROC,files_give,0.915
+claims,Methodology.md|321|Propensity AUROC,verdict,agrees
+facts_llm,KCNH2,label,positive
+facts_llm,HTR2B,label,positive
+facts_llm,SCN5A,label,positive
+facts_llm,PTGS1,label,positive
+facts_llm,PTGS2,label,positive
+facts_llm,ADRB2,label,positive
+facts_llm,DRD2,label,positive
+facts_llm,HRH1,label,positive
+facts,,app_shift_line,35
+facts,,best_auc,0.63586
+facts,,best_col,hasSmallMoleculeBinder
+facts,,best_flipped,False
+facts,,best_hi,0.655069
+facts,,best_lo,0.616589
+facts,,deployed_max,1
+facts,,deployed_min,0
+facts,,dr_drugged,1506
+facts,,dr_feat_groups,"Open Targets platform features 14, LOEUF constraint score 1, pLoF Genebass aggregates 42, cell-type expression 120 and organ-level max expression 14"
+facts,,dr_feat_total,191
+facts,,dr_flag,917
+facts,,dr_flag_drugged,409
+facts,,dr_flag_no_phase,508
+facts,,dr_n,17745
+facts,,dr_safe,1097
+facts,,dr_symbols_in_list,17745
+facts,,dr_und,16239
+facts,,dr_unl,15731
+facts,,drivers_all,334
+facts,,drivers_drugged,95
+facts,,drivers_undrugged,239
+facts,,e1_events,415
+facts,,e1_n,1564
+facts,,e1_nosym,1491
+facts,,e1_sym,73
+facts,,folds,5
+facts,,gene_list_n,19155
+facts,,genes_list_n,108
+facts,,max_safe_score,0.351392
+facts,,min_flag_score,0.482697
+facts,,n_alone,14
+facts,,n_alone_shown,13
+facts,,n_claims,16
+facts,,n_cols,17
+facts,,n_date_cols,0
+facts,,n_differ,10
+facts,,n_expr,38
+facts,,n_expr_old,24
+facts,,n_nonot,57
+facts,,n_ot,14
+facts,,n_saved,71
+facts,,n_sym_drugged,73
+facts,,not_in_dr,58
+facts,,not_in_dr_flag,6
+facts,,ot_flag,945
+facts,,ot_flag_drugged,415
+facts,,ot_flag_total,945
+facts,,ot_month,December 2025
+facts,,ot_n,78725
+facts,,ot_no_phase_flag,530
+facts,,ot_release,25.12
+facts,,ot_safe,1149
+facts,,ot_share,0.954253
+facts,,ot_unl,76631
+facts,,phase_line,161
+facts,,pi,0.4
+facts,,pi_doc,0.090
+facts,,pi_doc_line,350
+facts,,readme_feat_line,425
+facts,,seed_code,42
+facts,,shap_cols,71
+facts,,shap_insample_auc,0.999607
+facts,,shap_rho,0.637124
+facts,,shap_rho_shuffled,-0.0083916
+facts,,shap_rows,1564
+facts,,shared_n,1506
+facts,,shift_from,0.691
+facts,,shift_to,0.727
+facts,,textbook_flagged,8
+facts,,textbook_n,8
+facts,,und_flag_zero,205
+facts,,und_n,16239
+facts,,und_neg,15731
+facts,,und_pos,508
+facts,,und_zero,9650
