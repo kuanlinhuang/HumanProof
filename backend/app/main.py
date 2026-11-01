@@ -52,7 +52,7 @@ async def health_check():
     # Liveness stays 200 as long as the process is up (so a DB blip doesn't
     # fail Railway's healthcheck), but we report DB reachability so operators
     # can tell at a glance whether Postgres is actually connected. Only the
-    # exception type is surfaced — never the message — to avoid leaking the
+    # exception type is surfaced, never the message, to avoid leaking the
     # connection string / credentials.
     database = "ok"
     try:

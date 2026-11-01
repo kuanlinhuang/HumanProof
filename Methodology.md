@@ -1,4 +1,4 @@
-# HumanProof — Scientific Methodology
+# HumanProof: Scientific Methodology
 
 This document describes the data acquisition, processing, feature engineering, and statistical modelling used by HumanProof to produce genome-wide drug target safety risk scores.
 
@@ -8,8 +8,8 @@ This document describes the data acquisition, processing, feature engineering, a
 
 1. [Gene Universe](#1-gene-universe)
 2. [Data Sources and Processing](#2-data-sources-and-processing)
-   - 2.1 [CZ CellxGene Census — Expression](#21-cz-cellxgene-census--expression)
-   - 2.2 [Genebass UK Biobank — Protein-Truncating Variant Burden Tests](#22-genebass-uk-biobank--protein-truncating-variant-burden-tests)
+   - 2.1 [CZ CellxGene Census: Expression](#21-cz-cellxgene-census-expression)
+   - 2.2 [Genebass UK Biobank: Protein-Truncating Variant Burden Tests](#22-genebass-uk-biobank-protein-truncating-variant-burden-tests)
    - 2.3 [LOEUF Constraint Scores (gnomAD)](#23-loeuf-constraint-scores-gnomaD)
    - 2.4 [Open Targets Platform 25.12](#24-open-targets-platform-2512)
 3. [Feature Engineering](#3-feature-engineering)
@@ -21,11 +21,11 @@ This document describes the data acquisition, processing, feature engineering, a
    - 3.6 [p-value Transformation](#36-p-value-transformation)
 4. [DR+PU Safety Prediction Model](#4-drpu-safety-prediction-model)
    - 4.1 [Problem Formulation](#41-problem-formulation)
-   - 4.2 [Step 1 — Cross-fitted Propensity Model P(S=1|X)](#42-step-1--cross-fitted-propensity-model-ps1x)
-   - 4.3 [Step 2 — PU Prior Estimation via Elkan–Noto](#43-step-2--pu-prior-estimation-via-elkannoto)
-   - 4.4 [Step 3 — Cross-fitted Outcome Model P(Y=1|X)](#44-step-3--cross-fitted-outcome-model-py1x)
-   - 4.5 [Step 4 — AIPW Pseudo-outcome Construction](#45-step-4--aipw-pseudo-outcome-construction)
-   - 4.6 [Step 5 — Final DR Regression m_DR(X)](#46-step-5--final-dr-regression-m_drx)
+   - 4.2 [Step 1: Cross-fitted Propensity Model P(S=1|X)](#42-step-1-cross-fitted-propensity-model-ps1x)
+   - 4.3 [Step 2: PU Prior Estimation via Elkan-Noto](#43-step-2-pu-prior-estimation-via-elkan-noto)
+   - 4.4 [Step 3: Cross-fitted Outcome Model P(Y=1|X)](#44-step-3-cross-fitted-outcome-model-py1x)
+   - 4.5 [Step 4: AIPW Pseudo-outcome Construction](#45-step-4-aipw-pseudo-outcome-construction)
+   - 4.6 [Step 5: Final DR Regression m_DR(X)](#46-step-5-final-dr-regression-m_drx)
    - 4.7 [SHAP Interpretability](#47-shap-interpretability)
    - 4.8 [Statistical Guarantees](#48-statistical-guarantees)
 5. [Label Definitions](#5-label-definitions)
@@ -47,7 +47,7 @@ The model training and scoring population is further intersected with the Open T
 
 ## 2. Data Sources and Processing
 
-### 2.1 CZ CellxGene Census — Expression
+### 2.1 CZ CellxGene Census: Expression
 
 **Source:** CZ CellxGene single-cell census, pre-aggregated per cell type across all normal human tissue donors. Files: `data/cellxgene/`.
 
@@ -60,11 +60,11 @@ The census provides two aggregation matrices over all donors of the same tissue 
 | `celltype_fraction_expressing.csv.gz` | `pct_expressed` | Fraction of cells with raw count > 0 |
 | `celltype_metadata.csv` | `n_cells` | Total number of cells of that type across all sampled tissues |
 
-The matrices are wide-format (rows = cell types, columns = gene symbols). These are **not** computed by HumanProof — they are downloaded as pre-computed aggregations from the CellxGene census.
+The matrices are wide-format (rows = cell types, columns = gene symbols). These are **not** computed by HumanProof: they are downloaded as pre-computed aggregations from the CellxGene census.
 
 `mean_expression = log1p(mean_count)` where `mean_count` is the arithmetic mean raw UMI count over all cells of a given type. log1p compression reduces dynamic range and is standard in single-cell analysis.
 
-**Cell type selection:** 60 biologically diverse cell types across 14 tissue compartments, curated in `CELLXGENE_TISSUE_MAP` in `backend/load_real_data.py`. Cell types were selected for biological relevance to drug safety (covering major toxicity-relevant organs: heart, liver, kidney, brain, lung) and data quality (total cells ≥ ~5,000 in the census). All 60 are included as features with no downstream filtering — see §3.1.
+**Cell type selection:** 60 biologically diverse cell types across 14 tissue compartments, curated in `CELLXGENE_TISSUE_MAP` in `backend/load_real_data.py`. Cell types were selected for biological relevance to drug safety (covering major toxicity-relevant organs: heart, liver, kidney, brain, lung) and data quality (total cells ≥ ~5,000 in the census). All 60 are included as features with no downstream filtering (see §3.1).
 
 | Tissue | Cell types included |
 |--------|---------------------|
@@ -89,7 +89,7 @@ The matrices are wide-format (rows = cell types, columns = gene symbols). These 
 
 ---
 
-### 2.2 Genebass UK Biobank — Protein-Truncating Variant Burden Tests
+### 2.2 Genebass UK Biobank: Protein-Truncating Variant Burden Tests
 
 **Source:** Genebass (genebass.org), exome-wide burden test results from the UK Biobank (~400,000 whole-exome sequenced participants).
 
@@ -100,7 +100,7 @@ The matrices are wide-format (rows = cell types, columns = gene symbols). These 
 - `BETA_Burden`: burden test effect size (β), expressed in units of phenotype SD per minor allele
 - `SE_Burden`: standard error of β
 
-**Filtering and truncation:** The full Genebass pLoF file (`genebass_pLoF_filtered.pkl`) contains results filtered to a subset of genes. For DB construction, the top 200 associations per gene (by ascending `Pvalue`) are retained to keep the database size manageable (~18,092 genes × 200 = ~3.6M rows). Associations with missing `Pvalue` are dropped; Inf/−Inf values in effect sizes are set to NaN.
+**Filtering and truncation:** The full Genebass pLoF file (`genebass_pLoF_filtered.pkl`) contains results filtered to a subset of genes. For DB construction, the top 200 associations per gene (by ascending `Pvalue`) are retained to keep the database size manageable (~18,092 genes × 200 = ~3.6M rows). Associations with missing `Pvalue` are dropped; Inf/-Inf values in effect sizes are set to NaN.
 
 **Phenotype classification:** Each phenotype description (free-text from UK Biobank) is classified into one of 19 categories using a rule-based keyword matcher (`classify_phenotype()` in `backend/load_real_data.py`):
 
@@ -156,9 +156,9 @@ The matrices are wide-format (rows = cell types, columns = gene symbols). These 
 
 **Encoding conventions:**
 - Binary druggability flags (`isInMembrane`, `isSecreted`, `hasPocket`, `hasLigand`, `hasSmallMoleculeBinder`, `hasTEP`, `hasHighQualityChemicalProbes`): `1.0` = true, `0.0` = false, `NaN` = not assessed.
-- `hasSafetyEvent`: Open Targets convention uses `−1.0` to indicate a confirmed safety event. `NaN` means no safety event recorded (not confirmed safe). This asymmetric encoding reflects the positive-unlabeled nature of the label — absence of evidence is not evidence of absence.
-- `isCancerDriverGene`: also uses `−1.0` = true; recoded to `1.0` during feature loading.
-- `maxClinicalTrialPhase`: `0.25/0.50/0.75/1.0` encoding for Phases I–IV respectively; `NaN` = gene never entered clinical trials.
+- `hasSafetyEvent`: Open Targets convention uses `-1.0` to indicate a confirmed safety event. `NaN` means no safety event recorded (not confirmed safe). This asymmetric encoding reflects the positive-unlabeled nature of the label: absence of evidence is not evidence of absence.
+- `isCancerDriverGene`: also uses `-1.0` = true; recoded to `1.0` during feature loading.
+- `maxClinicalTrialPhase`: `0.25/0.50/0.75/1.0` encoding for Phases I-IV respectively; `NaN` = gene never entered clinical trials.
 - Continuous features (`geneticConstraint`, `mouseKOScore`, `paralogMaxIdentityPercentage`, `mouseOrthologMaxIdentityPercentage`, `tissueSpecificity`, `tissueDistribution`): real-valued, possibly `NaN`.
 
 **Role in the model:** The OT parquet serves as the backbone of the feature matrix (all 78,725 targets). The `hasSafetyEvent` and `maxClinicalTrialPhase` columns define the outcome label and training population respectively. All 14 OT features listed in §3.4 are used as model inputs.
@@ -182,7 +182,7 @@ Maximum `mean_expression` across all cell types within the same organ (14 organs
 
 This yields **120 cell-type features** (60 mean + 60 pct) + **14 organ features** = **134 expression features** total.
 
-All expression feature columns are **discovered dynamically** from the DataFrame columns using `get_feature_cols()` — no hardcoded cell-type list exists downstream of the DB.
+All expression feature columns are **discovered dynamically** from the DataFrame columns using `get_feature_cols()`: no hardcoded cell-type list exists downstream of the DB.
 
 ---
 
@@ -216,7 +216,7 @@ Total pLoF features: **4 global + 38 per-category = 42**.
 
 ### 3.3 LOEUF Feature
 
-A single feature `loeuf_score` (continuous, 0.03–2.0; lower = more constrained). Missing values (genes absent from gnomAD) are left as `NaN`.
+A single feature `loeuf_score` (continuous, 0.03 to 2.0; lower = more constrained). Missing values (genes absent from gnomAD) are left as `NaN`.
 
 ---
 
@@ -234,7 +234,7 @@ A single feature `loeuf_score` (continuous, 0.03–2.0; lower = more constrained
 | `geneticConstraint` | continuous | OT-normalised genetic constraint score |
 | `paralogMaxIdentityPercentage` | continuous | Maximum sequence identity to any paralogue |
 | `mouseOrthologMaxIdentityPercentage` | continuous | Maximum mouse orthologue identity |
-| `isCancerDriverGene` | binary | Annotated cancer driver gene (recoded −1→1) |
+| `isCancerDriverGene` | binary | Annotated cancer driver gene (recoded -1→1) |
 | `hasTEP` | binary | Target Enabling Package exists |
 | `mouseKOScore` | continuous | Aggregate phenotypic severity from mouse knockout |
 | `hasHighQualityChemicalProbes` | binary | Validated chemical probes available |
@@ -264,10 +264,10 @@ Total: **191 features** per gene. XGBoost handles missing values natively (learn
 All p-value features (`plof_min_pval`, `plof_{category}_min_p`) are transformed to:
 
 ```
-feature ← −log₁₀(p)  clipped to [0, 50]
+feature ← -log₁₀(p)  clipped to [0, 50]
 ```
 
-with a floor of `1×10⁻³⁰⁰` before log to avoid underflow. This puts more weight on genome-wide significant signals (−log₁₀(5×10⁻⁸) ≈ 7.3) and compresses the tail. Transformation is applied in-place before any model fitting.
+with a floor of `1×10⁻³⁰⁰` before log to avoid underflow. This puts more weight on genome-wide significant signals (-log₁₀(5×10⁻⁸) ≈ 7.3) and compresses the tail. Transformation is applied in-place before any model fitting.
 
 ---
 
@@ -276,16 +276,16 @@ with a floor of `1×10⁻³⁰⁰` before log to avoid underflow. This puts more
 ### 4.1 Problem Formulation
 
 **Notation:**
-- X ∈ ℝ¹⁹¹ — gene features
-- S ∈ {0, 1} — selection indicator: S=1 if gene has entered clinical trials (`maxClinicalTrialPhase` not null), S=0 otherwise
-- Y ∈ {0, 1} — true safety liability (Y=1 if the gene has a confirmed drug safety event)
+- X ∈ ℝ¹⁹¹: gene features
+- S ∈ {0, 1}: selection indicator: S=1 if gene has entered clinical trials (`maxClinicalTrialPhase` not null), S=0 otherwise
+- Y ∈ {0, 1}: true safety liability (Y=1 if the gene has a confirmed drug safety event)
 - Observed label: Y is observable only when S=1; for S=0 genes Y is latent
 
 Two structural biases must be corrected simultaneously:
 
 **1. Selection bias:** Genes that reach clinical trials (S=1) are a non-random, druggability-enriched subset. The propensity model AUROC ~0.91 confirms that features strongly predict selection. A naive model trained only on S=1 genes would learn to predict druggability, not safety liability.
 
-**2. Positive-unlabeled (PU) structure:** Among S=1 genes, absence of a recorded safety event (`hasSafetyEvent` = NaN) does not mean the gene is safe — it may simply not have been observed or reported. Treating unlabeled genes as true negatives introduces systematic false-negative bias (underestimates risk for novel targets). The Elkan–Noto method estimates the fraction of all genes with true safety liability.
+**2. Positive-unlabeled (PU) structure:** Among S=1 genes, absence of a recorded safety event (`hasSafetyEvent` = NaN) does not mean the gene is safe: it may simply not have been observed or reported. Treating unlabeled genes as true negatives introduces systematic false-negative bias (underestimates risk for novel targets). The Elkan-Noto method estimates the fraction of all genes with true safety liability.
 
 The DR+PU model addresses both simultaneously through a 5-step pipeline.
 
@@ -293,7 +293,7 @@ The DR+PU model addresses both simultaneously through a 5-step pipeline.
 
 ---
 
-### 4.2 Step 1 — Cross-fitted Propensity Model P(S=1|X)
+### 4.2 Step 1: Cross-fitted Propensity Model P(S=1|X)
 
 **Goal:** Estimate the probability that a gene enters clinical trials given its features.
 
@@ -307,8 +307,8 @@ w_i = π̄ / max(π̂(X_i), ε),    ε = 1×10⁻⁶
 
 where π̄ = mean(S) ≈ 0.085 (overall drugging rate among DB genes). Weights are clipped at **10×** (MAX_IPW = 10) to prevent extreme weights from dominating.
 
-- Weights **up-weight** surprising drug targets (low π̂ but S=1) — genes that entered trials despite appearing undruggable.
-- Weights **down-weight** predictable targets (high π̂ and S=1) — genes that entered trials for obvious druggability reasons.
+- Weights **up-weight** surprising drug targets (low π̂ but S=1), genes that entered trials despite appearing undruggable.
+- Weights **down-weight** predictable targets (high π̂ and S=1), genes that entered trials for obvious druggability reasons.
 
 **Effective sample size (ESS)** for the drugged subset:
 
@@ -322,14 +322,14 @@ ESS ≈ 22% of the 1,506 drugged genes, confirming strong selection bias that wo
 
 ---
 
-### 4.3 Step 2 — PU Prior Estimation via Elkan–Noto
+### 4.3 Step 2: PU Prior Estimation via Elkan-Noto
 
 **Goal:** Estimate π_p = P(Y=1), the population prevalence of true safety liability across all protein-coding genes.
 
 **Method (Elkan & Noto, 2008):** Train a naive classifier f that predicts the "labeled positive" indicator:
 
 ```
-pu_label_i = 1  if  hasSafetyEvent_i == −1.0
+pu_label_i = 1  if  hasSafetyEvent_i == -1.0
              0  otherwise  (including unlabeled genes)
 ```
 
@@ -349,13 +349,13 @@ where `P(labeled=1)` = proportion of all DB genes with a confirmed safety event.
 
 **Observed values:** P(labeled=1) ≈ 0.052, c ≈ 0.576, **π_p ≈ 0.090**.
 
-Interpretation: approximately 9% of all protein-coding genes are estimated to have true safety liability if pharmacologically inhibited — compared to the ~5% that have an observed recorded event among genes ever tested clinically.
+Interpretation: approximately 9% of all protein-coding genes are estimated to have true safety liability if pharmacologically inhibited, compared to the ~5% that have an observed recorded event among genes ever tested clinically.
 
 π_p is clipped to [10⁻⁴, 0.50] to prevent degenerate estimates.
 
 ---
 
-### 4.4 Step 3 — Cross-fitted Outcome Model P(Y=1|X)
+### 4.4 Step 3: Cross-fitted Outcome Model P(Y=1|X)
 
 **Goal:** Estimate the conditional probability of a safety event given features, corrected for both selection bias (via IPW) and label noise (via PU reweighting).
 
@@ -368,14 +368,14 @@ w_i = IPW_i × PU_weight_i
 
 where:
   PU_weight_i = π_p          if Y_i = 1  (confirmed safety event)
-  PU_weight_i = (1 − π_p)    if Y_i = 0  (no safety event recorded — treated as noisy negative)
+  PU_weight_i = (1 - π_p)    if Y_i = 0  (no safety event recorded, treated as noisy negative)
 ```
 
-The PU weight down-weights "negative" drugged genes by (1−π_p) ≈ 0.91, reflecting that ~9% of them likely have true safety liability that was not observed. Positive labels are up-weighted by π_p.
+The PU weight down-weights "negative" drugged genes by (1-π_p) ≈ 0.91, reflecting that ~9% of them likely have true safety liability that was not observed. Positive labels are up-weighted by π_p.
 
 **Additional class balance:** `scale_pos_weight` = n_neg / n_pos ≈ 2.68 (409 positives, 1,097 negatives within drugged set).
 
-**Cross-fitting:** 5-fold stratified CV produces OOF predictions m̂_oof(X_i) for each drugged gene — scored by a model that never trained on it. This eliminates self-prediction bias and ensures the OOF scores are honest estimates of held-out performance.
+**Cross-fitting:** 5-fold stratified CV produces OOF predictions m̂_oof(X_i) for each drugged gene, scored by a model that never trained on it. This eliminates self-prediction bias and ensures the OOF scores are honest estimates of held-out performance.
 
 A final outcome model is then trained on **all 1,506 drugged genes** (using the same weights, without early stopping) to enable extrapolation to undrugged genes in Step 4.
 
@@ -383,20 +383,20 @@ A final outcome model is then trained on **all 1,506 drugged genes** (using the 
 
 ---
 
-### 4.5 Step 4 — AIPW Pseudo-outcome Construction
+### 4.5 Step 4: AIPW Pseudo-outcome Construction
 
 **Goal:** Construct a doubly-robust corrected target Ỹ for every gene that absorbs both the selection bias and the OOF correction.
 
 **Formula (AIPW estimator):**
 
 ```
-Ỹ_i  =  m̂(X_i)  +  (S_i / π̂_i) × (Y_i − m̂(X_i))
+Ỹ_i  =  m̂(X_i)  +  (S_i / π̂_i) × (Y_i - m̂(X_i))
 ```
 
 **For drugged genes (S_i = 1):**
 
 ```
-Ỹ_i  =  m̂_oof(X_i)  +  (Y_i − m̂_oof(X_i)) / max(π̂_i, 0.01)
+Ỹ_i  =  m̂_oof(X_i)  +  (Y_i - m̂_oof(X_i)) / max(π̂_i, 0.01)
 ```
 
 - m̂(X_i) = OOF score from Step 3 (honest, not self-predicted)
@@ -413,7 +413,7 @@ A final outcome model is then trained on **all 1,506 drugged genes** (using the 
 - No IPW correction (S=0 so the second term vanishes)
 - m̂(X_i) = prediction from the final outcome model extrapolated to undrugged genes
 
-**Clipping:** Ỹ is clipped to [−1, 2] to limit the influence of extreme corrections from near-zero propensities.
+**Clipping:** Ỹ is clipped to [-1, 2] to limit the influence of extreme corrections from near-zero propensities.
 
 **Empirical distribution:**
 - Drugged genes Ỹ: mean ≈ 0.17, std ≈ 1.00
@@ -421,11 +421,11 @@ A final outcome model is then trained on **all 1,506 drugged genes** (using the 
 
 The high variance in drugged-gene pseudo-outcomes reflects the genuine uncertainty in safety liability corrected for selection.
 
-**Double robustness property:** The AIPW estimator is consistent if **either** the propensity model (Step 1) **or** the outcome model (Step 3) is correctly specified — a much weaker assumption than requiring both to be correct.
+**Double robustness property:** The AIPW estimator is consistent if **either** the propensity model (Step 1) **or** the outcome model (Step 3) is correctly specified, a much weaker assumption than requiring both to be correct.
 
 ---
 
-### 4.6 Step 5 — Final DR Regression m_DR(X)
+### 4.6 Step 5: Final DR Regression m_DR(X)
 
 **Goal:** Train a single, smooth predictor on all 17,745 genes that maps features to the AIPW-corrected pseudo-outcomes. This is the deployed model that scores every gene in the UI.
 
@@ -433,13 +433,13 @@ The high variance in drugged-gene pseudo-outcomes reflects the genuine uncertain
 - **Target:** Ỹ from Step 4
 - **Sample weights:** 2× for drugged genes (S=1), 1× for undrugged genes (S=0)
   - Drugged genes carry real label information Y through the AIPW correction; their pseudo-outcomes are anchored to observed events
-  - Undrugged genes contribute only extrapolated m̂ — useful as "soft structure" but less informative than real labels
+  - Undrugged genes contribute only extrapolated m̂, useful as "soft structure" but less informative than real labels
 - **Fixed number of trees:** 300 (early stopping is not used for the final regressor, as optimising on noisy pseudo-outcomes is unreliable as an early-stopping criterion)
 
 **Output transformation:** Predictions are clipped to [0, 1] to form the reported `safety_score_dr` for each gene.
 
 **Properties of m_DR(X):**
-- Produces a valid, de-biased risk score for any gene — drugged or not — with no model-switching logic
+- Produces a valid, de-biased risk score for any gene (drugged or not), with no model-switching logic
 - SHAP values have a consistent, genome-wide interpretation across all 17,745 genes
 - The regressor smooths over the noisy individual pseudo-outcomes, providing a more stable estimate than using Ỹ directly
 
@@ -460,9 +460,9 @@ where φ_j(X_i) is the SHAP value for feature j: the average marginal contributi
 **Batch computation:** SHAP values are computed for all 17,745 DB genes simultaneously using vectorised TreeExplainer. Results are stored in `gene_shap_dr.json` (~455 MB), with per-gene records sorted by |φ_j| descending.
 
 **Feature groups for display:**
-- `ot` — Open Targets platform features (14)
-- `genetics` — LOEUF constraint + all pLoF features (43 total)
-- `expression` — all `expr_ct_*` and `expr_organ_*` features (134 total)
+- `ot`: Open Targets platform features (14)
+- `genetics`: LOEUF constraint + all pLoF features (43 total)
+- `expression`: all `expr_ct_*` and `expr_organ_*` features (134 total)
 
 ---
 
@@ -471,14 +471,14 @@ where φ_j(X_i) is the SHAP value for feature j: the average marginal contributi
 **Double robustness (Robins et al., 1994; Scharfstein et al., 1999):** The AIPW estimator satisfies
 
 ```
-E[Ỹ − Y_true] → 0
+E[Ỹ - Y_true] → 0
 ```
 
-if either the propensity model π̂(X) or the outcome model m̂(X) is consistent — not necessarily both. This makes the estimator robust to moderate misspecification in one of the two models.
+if either the propensity model π̂(X) or the outcome model m̂(X) is consistent, not necessarily both. This makes the estimator robust to moderate misspecification in one of the two models.
 
-**Cross-fitting (Chernozhukov et al., 2018):** Both the propensity (Step 1) and outcome (Step 3) models use 5-fold cross-fitting. Without cross-fitting, the in-sample residual (Y − m̂) could correlate with propensity estimation noise, introducing second-order bias that would break the double-robustness guarantee. Cross-fitting ensures that the residual used in the AIPW correction is evaluated on held-out data, eliminating this correlation.
+**Cross-fitting (Chernozhukov et al., 2018):** Both the propensity (Step 1) and outcome (Step 3) models use 5-fold cross-fitting. Without cross-fitting, the in-sample residual (Y - m̂) could correlate with propensity estimation noise, introducing second-order bias that would break the double-robustness guarantee. Cross-fitting ensures that the residual used in the AIPW correction is evaluated on held-out data, eliminating this correlation.
 
-**PU consistency (Elkan & Noto, 2008):** The Elkan–Noto prior correction ensures the outcome model's loss function is calibrated to the true positive prevalence π_p rather than the observed labeling rate. Without this correction, treating all unlabeled negatives as true negatives would systematically underestimate risk for undrugged genes.
+**PU consistency (Elkan & Noto, 2008):** The Elkan-Noto prior correction ensures the outcome model's loss function is calibrated to the true positive prevalence π_p rather than the observed labeling rate. Without this correction, treating all unlabeled negatives as true negatives would systematically underestimate risk for undrugged genes.
 
 **IPW stability:** Stabilized weights (π̄ / π̂ rather than 1/π̂) and hard clipping at 10× prevent any single gene from dominating the weighted training distribution.
 
@@ -488,11 +488,11 @@ if either the propensity model π̂(X) or the outcome model m̂(X) is consistent
 
 | Label | Condition | Count (DB genes) |
 |-------|-----------|-----------------|
-| `positive` | `hasSafetyEvent == −1.0` (OT convention) | ~409 (within drugged DB genes) |
+| `positive` | `hasSafetyEvent == -1.0` (OT convention) | ~409 (within drugged DB genes) |
 | `drugged_safe` | `maxClinicalTrialPhase` not null AND `hasSafetyEvent` is null | ~1,097 |
 | `unlabeled` | `maxClinicalTrialPhase` is null | ~16,239 |
 
-The `drugged_safe` label is an **assumed negative** — the gene has been tested clinically and no safety event has been recorded. It is not a confirmed-safe label; the PU weighting in Step 3 acknowledges that ~9% of these genes may still have true safety liability.
+The `drugged_safe` label is an **assumed negative**: the gene has been tested clinically and no safety event has been recorded. It is not a confirmed-safe label; the PU weighting in Step 3 acknowledges that ~9% of these genes may still have true safety liability.
 
 ---
 
@@ -541,28 +541,28 @@ All XGBoost models share a common base configuration (`_XGB_COMMON`):
 | `data/export_shap_dr.py` | Batch SHAP computation for all 17,745 genes; outputs `gene_shap_dr.json` |
 | `data/plot_dr_diagnostics.py` | 4 diagnostic figures (propensity, scores, pseudo-outcomes, importance) |
 
-**Feature column discovery:** All feature columns are discovered dynamically at runtime from `df.columns` via `get_feature_cols(df)`. There are no hardcoded lists for cell types or pLoF categories downstream of the DB — adding a new cell type to `CELLXGENE_TISSUE_MAP` or a new phenotype category automatically propagates through all downstream feature engineering and modelling steps.
+**Feature column discovery:** All feature columns are discovered dynamically at runtime from `df.columns` via `get_feature_cols(df)`. There are no hardcoded lists for cell types or pLoF categories downstream of the DB: adding a new cell type to `CELLXGENE_TISSUE_MAP` or a new phenotype category automatically propagates through all downstream feature engineering and modelling steps.
 
 ---
 
 ## 8. References
 
-1. **Chernozhukov, V., Chetverikov, D., Demirer, M., Duflo, E., Hansen, C., Newey, W., & Robins, J.** (2018). Double/debiased machine learning for treatment and structural parameters. *The Econometrics Journal*, 21(1), C1–C68.
+1. **Chernozhukov, V., Chetverikov, D., Demirer, M., Duflo, E., Hansen, C., Newey, W., & Robins, J.** (2018). Double/debiased machine learning for treatment and structural parameters. *The Econometrics Journal*, 21(1), C1-C68.
 
-2. **Elkan, C., & Noto, K.** (2008). Learning classifiers from only positive and unlabeled data. *Proceedings of the 14th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining*, 213–220.
+2. **Elkan, C., & Noto, K.** (2008). Learning classifiers from only positive and unlabeled data. *Proceedings of the 14th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining*, 213-220.
 
 3. **Kiryo, R., Niu, G., du Plessis, M. C., & Sugiyama, M.** (2017). Positive-unlabeled learning with non-negative risk estimator. *Advances in Neural Information Processing Systems*, 30.
 
-4. **Robins, J. M., Rotnitzky, A., & Zhao, L. P.** (1994). Estimation of regression coefficients when some regressors are not always observed. *Journal of the American Statistical Association*, 89(427), 846–866.
+4. **Robins, J. M., Rotnitzky, A., & Zhao, L. P.** (1994). Estimation of regression coefficients when some regressors are not always observed. *Journal of the American Statistical Association*, 89(427), 846-866.
 
 5. **CZ CellxGene Consortium** (2023). CZ CELLxGENE Discover: A single-cell data platform for scalable exploration, analysis and modeling of aggregated data. *bioRxiv*.
 
 6. **Genebass:** Karczewski, K. J., et al. (2022). Systematic single-variant and gene-based association testing of thousands of phenotypes in 394,841 UK Biobank exomes. *Cell Genomics*, 2(9), 100168.
 
-7. **gnomAD LOEUF:** Karczewski, K. J., et al. (2020). The mutational constraint spectrum quantified from variation in 141,456 humans. *Nature*, 581(7809), 434–443.
+7. **gnomAD LOEUF:** Karczewski, K. J., et al. (2020). The mutational constraint spectrum quantified from variation in 141,456 humans. *Nature*, 581(7809), 434-443.
 
-8. **Open Targets Platform:** Ochoa, D., et al. (2023). The next-generation Open Targets Platform: reimagined, redesigned, rebuilt. *Nucleic Acids Research*, 51(D1), D1353–D1359.
+8. **Open Targets Platform:** Ochoa, D., et al. (2023). The next-generation Open Targets Platform: reimagined, redesigned, rebuilt. *Nucleic Acids Research*, 51(D1), D1353-D1359.
 
-9. **XGBoost:** Chen, T., & Guestrin, C. (2016). XGBoost: A scalable tree boosting system. *Proceedings of the 22nd ACM SIGKDD*, 785–794.
+9. **XGBoost:** Chen, T., & Guestrin, C. (2016). XGBoost: A scalable tree boosting system. *Proceedings of the 22nd ACM SIGKDD*, 785-794.
 
 10. **SHAP:** Lundberg, S. M., & Lee, S.-I. (2017). A unified approach to interpreting model predictions. *Advances in Neural Information Processing Systems*, 30.

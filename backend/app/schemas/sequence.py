@@ -17,12 +17,12 @@ class SequenceSubmission(BaseModel):
         max_length=128,
         description="User-defined name for this sequence",
     )
-    # For nanobodies and peptides — a single chain
+    # For nanobodies and peptides: a single chain
     sequence: str | None = Field(
         default=None,
         description="Single amino acid sequence (for nanobody/peptide)",
     )
-    # For antibodies — heavy + light chains
+    # For antibodies: heavy + light chains
     heavy_chain: str | None = Field(
         default=None,
         description="Heavy chain amino acid sequence (for antibody)",

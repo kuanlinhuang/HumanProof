@@ -4,7 +4,7 @@
 
 > Given a biologic sequence, which human proteins does it engage, in which cells do those engagements matter, and what does human genetics already tell us happens when those genes are disrupted?
 
-HumanProof reframes safety prediction from "simulate an animal" to "interrogate human biology directly" -- a fundamentally stronger epistemic position for regulatory purposes.
+HumanProof reframes safety prediction from "simulate an animal" to "interrogate human biology directly": a fundamentally stronger epistemic position for regulatory purposes.
 
 ---
 
@@ -72,9 +72,9 @@ python load_real_data.py
 ```
 
 This creates `humanproof.db` (SQLite) with **real data** for all ~19,000 protein-coding genes:
-- **~1.06M expression records** -- log1p mean expression + fraction expressing from CZ CellxGene census across 14 tissues and 60 cell types (17,745 genes)
-- **~3.6M pLoF associations** -- Genebass UK Biobank burden-test results (18,092 genes, top 200 per gene)
-- **~19,155 LOEUF scores** -- gene constraint from gnomAD
+- **~1.06M expression records**: log1p mean expression + fraction expressing from CZ CellxGene census across 14 tissues and 60 cell types (17,745 genes)
+- **~3.6M pLoF associations**: Genebass UK Biobank burden-test results (18,092 genes, top 200 per gene)
+- **~19,155 LOEUF scores**: gene constraint from gnomAD
 
 ### 4. Start the backend
 
@@ -176,11 +176,11 @@ Submit biologic sequences (antibody heavy/light chains, nanobody VHH domains, or
 
 For any gene, view an integrated safety card with:
 
-- **Risk Gauge** -- semicircular gauge showing overall risk class (low/moderate/high/critical) based on LOEUF score
-- **Expression Heatmap** -- D3.js visualization of expression across tissues and cell types
-- **PheWAS Plot** -- Manhattan-style phenome-wide association scatter plot
-- **pLOF Association Table** -- sortable table of all loss-of-function phenotype associations
-- **SHAP Interpretability** -- per-feature SHAP values from the DR+PU safety model explaining each gene's risk score
+- **Risk Gauge**: semicircular gauge showing overall risk class (low/moderate/high/critical) based on LOEUF score
+- **Expression Heatmap**: D3.js visualization of expression across tissues and cell types
+- **PheWAS Plot**: Manhattan-style phenome-wide association scatter plot
+- **pLOF Association Table**: sortable table of all loss-of-function phenotype associations
+- **SHAP Interpretability**: per-feature SHAP values from the DR+PU safety model explaining each gene's risk score
 
 ### Executive Safety Dashboard
 
@@ -390,12 +390,12 @@ The database is populated from three real biological data sources via `load_real
 
 ### Gene Constraint: LOEUF (gnomAD)
 - **Source**: Loss-of-Function Observed/Expected Upper bound Fraction from gnomAD, distributed via [grr.iossifovlab.com](https://grr.iossifovlab.com/gene_properties/gene_scores/LOEUF/)
-- **Metric**: LOEUF score (0.03–2.0); lower = more intolerant to loss-of-function
+- **Metric**: LOEUF score (0.03 to 2.0); lower = more intolerant to loss-of-function
 - **Coverage**: ~19,155 protein-coding genes
 - **Risk classification** (gnomAD-aligned thresholds):
   - `critical`: LOEUF < 0.35
-  - `high`: LOEUF 0.35–0.70
-  - `moderate`: LOEUF 0.70–1.00
+  - `high`: LOEUF 0.35 to 0.70
+  - `moderate`: LOEUF 0.70 to 1.00
   - `low`: LOEUF ≥ 1.00
 - **Note**: pLI scores are not included from this source; pLI fields are set to 0.0
 - **File**: `data/LOEUF_scores.csv.gz`
@@ -419,10 +419,10 @@ The database is populated from three real biological data sources via `load_real
 
 - **File**: `data/opentargets_target_prioritisation.parquet` (Snappy-compressed Parquet)
 
-### ML Safety Model — DR+PU (Doubly-Robust + Positive-Unlabeled)
+### ML Safety Model: DR+PU (Doubly-Robust + Positive-Unlabeled)
 - **Script**: `data/safety_model_dr.py`
 - **Algorithm**: 5-step doubly-robust pipeline with XGBoost and SHAP interpretability
-- **Features** (191 total, all discovered dynamically — no hardcoded filters):
+- **Features** (191 total, all discovered dynamically, no hardcoded filters):
   - Open Targets platform features (14)
   - LOEUF constraint score (1)
   - pLoF Genebass aggregates: 4 global + 38 per-category (19 categories × min p + max |β|) (42)
@@ -431,15 +431,15 @@ The database is populated from three real biological data sources via `load_real
 
 The pipeline addresses two structural challenges in drug safety prediction:
 
-1. **Selection bias** — genes in clinical trials are a non-random, druggability-enriched subset. Corrected via inverse propensity weighting (IPW).
-2. **Positive-unlabeled (PU) structure** — undrugged genes are unlabeled, not confirmed safe. Corrected via Elkan–Noto prior estimation.
+1. **Selection bias**: genes in clinical trials are a non-random, druggability-enriched subset. Corrected via inverse propensity weighting (IPW).
+2. **Positive-unlabeled (PU) structure**: undrugged genes are unlabeled, not confirmed safe. Corrected via Elkan-Noto prior estimation.
 
 **Five-step pipeline** (training population: 17,745 DB genes, 1,506 drugged, 409 positives):
-1. **Propensity model** P(S=1|X) — 5-fold CV XGBoost, AUROC ~0.91; generates stabilized IPW weights
-2. **PU prior** π_p ≈ 9% — Elkan–Noto method estimates fraction of all genes with true safety liability
-3. **Outcome model** P(Y=1|X) — trained on drugged genes with IPW+PU weights; OOF AUROC 0.691, AUPRC 0.426
-4. **AIPW pseudo-outcomes** Ỹ — doubly-robust correction combining both models
-5. **Final DR model** m_DR(X) — XGBRegressor on all 17,745 genes; deployed predictor for the UI
+1. **Propensity model** P(S=1|X): 5-fold CV XGBoost, AUROC ~0.91; generates stabilized IPW weights
+2. **PU prior** π_p ≈ 9%: Elkan-Noto method estimates fraction of all genes with true safety liability
+3. **Outcome model** P(Y=1|X): trained on drugged genes with IPW+PU weights; OOF AUROC 0.691, AUPRC 0.426
+4. **AIPW pseudo-outcomes** Ỹ: doubly-robust correction combining both models
+5. **Final DR model** m_DR(X): XGBRegressor on all 17,745 genes; deployed predictor for the UI
 
 To run:
 ```bash

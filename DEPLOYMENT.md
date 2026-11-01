@@ -1,4 +1,4 @@
-# HumanProof — Deployment Guide
+# HumanProof: Deployment Guide
 
 Primary deployment targets: **Vercel** (frontend) + **Railway** or **Google Cloud Run** (backend).
 Docker/VPS and GPU worker sections are retained at the bottom for future reference.
@@ -82,7 +82,7 @@ curl "http://127.0.0.1:8000/api/v1/targets/search?q=TP5"
 
 ## 2. Environment Variables Reference
 
-### Backend — `HUMANPROOF_*` prefix (pydantic-settings)
+### Backend: `HUMANPROOF_*` prefix (pydantic-settings)
 
 | Variable | Default | Description |
 |----------|---------|-------------|
@@ -100,7 +100,7 @@ HUMANPROOF_CORS_ORIGINS=["https://your-project.vercel.app"]
 HUMANPROOF_DATA_DIR=/app/data
 ```
 
-### Frontend — `NEXT_PUBLIC_*` prefix
+### Frontend: `NEXT_PUBLIC_*` prefix
 
 | Variable | Default | Description |
 |----------|---------|-------------|
@@ -183,7 +183,7 @@ HUMANPROOF_DATA_DIR=/app/data
 
 > **asyncpg URL (handled automatically):** Railway's `DATABASE_URL` uses the `postgres://`
 > scheme, but SQLAlchemy's async engine needs `postgresql+asyncpg://`. The app now normalizes
-> this at startup (`app/config.py`), so `${{Postgres.DATABASE_URL}}` above works as-is — no
+> this at startup (`app/config.py`), so `${{Postgres.DATABASE_URL}}` above works as-is, no
 > manual shim required. If `HUMANPROOF_DATABASE_URL` is not set, the app also falls back to a
 > bare `DATABASE_URL` (which Railway injects automatically), so attaching Postgres connects the
 > app instead of silently using the local SQLite default.
@@ -417,7 +417,7 @@ postgres = ["asyncpg>=0.29.0", "psycopg2-binary>=2.9.0"]
 HUMANPROOF_DATABASE_URL=postgresql+asyncpg://user:password@host:5432/humanproof
 ```
 
-The rest of the code (`database.py`, all models) is already compatible — SQLAlchemy 2.0 handles both SQLite and PostgreSQL identically.
+The rest of the code (`database.py`, all models) is already compatible: SQLAlchemy 2.0 handles both SQLite and PostgreSQL identically.
 
 ### 6.3 Migrate existing SQLite data (if needed)
 
@@ -437,16 +437,16 @@ pgloader sqlite:///backend/humanproof.db \
 |-------|-------|------|
 | Lab / demo (≤10 users) | Railway Postgres (1 GB RAM) | ~$5/mo |
 | Department (≤100 users) | Railway Postgres (2 GB RAM) | ~$25/mo |
-| Multi-lab (>100 users) | Cloud SQL db.g1-small or RDS t3.medium | ~$30–50/mo |
+| Multi-lab (>100 users) | Cloud SQL db.g1-small or RDS t3.medium | ~$30 to $50/mo |
 
 ---
 
 ## 7. Loading Real Data in Production
 
 The backend reads from three large data sources at startup or on first query:
-- `gene_shap_dr.json` (455 MB) — per-gene SHAP values, read by `targets.py`
-- `genebass_pLoF_filtered.pkl` — pLoF associations, used during DB seeding
-- `LOEUF_scores.csv.gz` — constraint scores, used during DB seeding
+- `gene_shap_dr.json` (455 MB): per-gene SHAP values, read by `targets.py`
+- `genebass_pLoF_filtered.pkl`: pLoF associations, used during DB seeding
+- `LOEUF_scores.csv.gz`: constraint scores, used during DB seeding
 
 ### 7.1 Railway: upload via CLI or volume
 
@@ -503,7 +503,7 @@ curl https://<backend-url>/health
 
 The `database` field reports live connectivity to the configured database
 (Postgres in production, SQLite in local/dev). If it shows
-`"error: <ExceptionType>"` the app is running but cannot reach that database —
+`"error: <ExceptionType>"` the app is running but cannot reach that database:
 in production, check that the Postgres service is online and
 `HUMANPROOF_DATABASE_URL` (or the injected `DATABASE_URL`) is correct. The
 endpoint intentionally stays `200` even when the DB is down so a transient blip
@@ -559,11 +559,11 @@ Note: the value must be a valid JSON array string.
 
 1. Confirm the backend is running: `curl https://<backend-url>/health`
 2. Confirm `NEXT_PUBLIC_API_URL` is set correctly in the Vercel environment variables
-3. Check browser console — the URL may still point to `localhost:8000` if the env var was missing at build time (trigger a redeploy after adding it)
+3. Check browser console: the URL may still point to `localhost:8000` if the env var was missing at build time (trigger a redeploy after adding it)
 
 ### `{"detail":"Not Found"}` at the backend URL
 
-This is FastAPI's normal 404 for a path with no route — it means the backend **is
+This is FastAPI's normal 404 for a path with no route: it means the backend **is
 up and serving**, you're just hitting a path that doesn't exist. The base URL `/`
 now returns a JSON banner, but any other unknown path still 404s by design. Verify
 the service with:
@@ -576,7 +576,8 @@ curl https://<backend-url>/          # → {"app":"HumanProof","status":"ok",...
 If you previously saw the backend fail entirely while Postgres was offline, that was
 a startup crash (a 502 / "Application failed to respond"), not this 404. Startup now
 retries the DB connection with backoff and boots even if Postgres is unreachable, so
-`/health` stays reachable and reports the DB state — trigger a redeploy/restart if the
+`/health` stays reachable and reports the DB state.
+Trigger a redeploy/restart if the
 service is still on a pre-fix crashed deploy.
 
 ### asyncpg URL format error (Railway)
@@ -622,7 +623,7 @@ Set the env var or ensure the file is uploaded to the data volume/bucket.
 > **When to use:** If you need full infrastructure control, a private network, or want to
 > self-host on a university HPC or cloud VM.
 
-### Dockerfile — Backend
+### Dockerfile: Backend
 
 Create `docker/Dockerfile.backend`:
 
@@ -652,7 +653,7 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", \
      "--workers", "2", "--proxy-headers", "--forwarded-allow-ips=*"]
 ```
 
-### Dockerfile — Frontend
+### Dockerfile: Frontend
 
 Create `docker/Dockerfile.frontend`:
 

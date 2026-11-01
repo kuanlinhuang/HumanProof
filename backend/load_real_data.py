@@ -478,7 +478,7 @@ def load_real_loeuf_data(gene_universe: dict[str, tuple[str, str]]) -> list[dict
     File:   data/LOEUF_scores.csv.gz
 
     Columns in source: gene, LOEUF, LOEUF_rank
-      LOEUF: 90% upper CI for observed/expected pLoF ratio (0.03–2.0)
+      LOEUF: 90% upper CI for observed/expected pLoF ratio (0.03 to 2.0)
              Lower = more constrained (intolerant to LOF)
       LOEUF_rank: rank among 19,200 genes (1 = most constrained)
 
