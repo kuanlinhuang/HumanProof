@@ -24,7 +24,7 @@ import sys
 
 import numpy as np
 import pandas as pd
-from sklearn.metrics import average_precision_score, roc_auc_score
+from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import StratifiedKFold
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -840,7 +840,6 @@ def result_cells(r):
 
 
 def experiments_table(F, K, k):
-    e1 = k['e1_params']
     rows = [
         ['Drugged-only model (`train_drugged_only`, Model B)', 'Which genes that entered a trial carry a safety flag?', 'flag against no flag', num(K['e1_n']),
          f"{K['n_saved']} saved columns: {joined(f'{int(r.columns)} {GROUP_WORD[r.group]}' for r in F['groups'].itertuples())}", f"{K['folds']}-fold out of fold, seed {K['seed_code']}",
@@ -1016,7 +1015,7 @@ def values(F, K, src):
     k = src.facts
     res = F['results'].set_index(['reading', 'stage'])
     v = {}
-    e1, st3, st1 = res.loc[('drugged_only', 'all')], res.loc[('dr_step3', 'all')], res.loc[('dr_step1', 'all')]
+    e1, st3 = res.loc[('drugged_only', 'all')], res.loc[('dr_step3', 'all')]
     uo, ud = res.loc[('dr_und_outcome', 'all')], res.loc[('dr_und_deployed', 'all')]
     pair = F['paired'].iloc[0]
     # claims of the text that the tables must hold
@@ -1078,7 +1077,6 @@ def values(F, K, src):
 
 def sentences(v, F, K, src):
     """The twelve statements of the section "At a glance", each made from the figures and each one line of one sentence."""
-    k = src.facts
     s = {}
     stage_n = F['stage'][(F['stage']['universe'] == 'Open Targets file') & F['stage']['phase'].isin([str(c) for c in PHASES])].set_index('phase')['genes']
     s['s_summary'] = (f"The safety model asks whether Open Targets lists a known safety event for a gene, learning from its Open Targets columns, loss of function genetics, constraint and cell type expression, "

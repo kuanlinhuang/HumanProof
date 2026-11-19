@@ -14,9 +14,7 @@ Run from the backend/ directory:
 import json
 import math
 import os
-import pickle
 import sqlite3
-import sys
 from pathlib import Path
 
 import numpy as np

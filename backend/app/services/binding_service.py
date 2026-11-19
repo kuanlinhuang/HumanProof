@@ -11,7 +11,6 @@ When Boltz-2 is available, swap by setting HUMANPROOF_PREDICTOR=boltz2.
 
 import asyncio
 import hashlib
-import math
 import random
 import uuid
 from abc import ABC, abstractmethod
@@ -25,8 +24,6 @@ from app.models.plof import GeneDosageSensitivity
 from app.models.job import PredictionJob, BindingPrediction
 from app.schemas.sequence import SequenceSubmission
 from app.schemas.job import (
-    BindingPredictionSchema,
-    PredictionJobResult,
     BindingProfileSummary,
     PipelineResult,
 )

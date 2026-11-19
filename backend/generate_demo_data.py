@@ -8,8 +8,6 @@ Dosage sensitivity remains synthetic (real gnomAD scores for Phase 2).
 """
 
 import json
-import math
-import pickle
 import random
 import sqlite3
 from pathlib import Path

@@ -186,8 +186,8 @@ def plot_feature_importance(df: pd.DataFrame, feature_cols: list[str]) -> None:
     colors = importance["group"].map(group_colors).tolist()
 
     fig, ax = plt.subplots(figsize=(9, 7))
-    bars = ax.barh(range(len(importance)), importance["mean_abs_shap"].values,
-                   color=colors, alpha=0.85)
+    ax.barh(range(len(importance)), importance["mean_abs_shap"].values,
+            color=colors, alpha=0.85)
     ax.set_yticks(range(len(importance)))
     ax.set_yticklabels(importance["label"].values, fontsize=9)
     ax.invert_yaxis()

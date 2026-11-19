@@ -1,6 +1,5 @@
 """Sequence validation utilities for biologic inputs."""
 
-import re
 from app.schemas.sequence import SequenceSubmission, SequenceValidationResult
 
 
