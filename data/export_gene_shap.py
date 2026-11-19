@@ -119,7 +119,7 @@ def get_readable_label(feat: str) -> str:
         return f"{ct} (expression)"
     if feat.startswith("plof_") and feat.endswith("_min_p"):
         organ = feat[len("plof_"):-len("_min_p")].replace("_", " ").title()
-        return f"pLoF: {organ} \u2212log\u2081\u2080p"
+        return f"pLoF: {organ} -log\u2081\u2080p"
     if feat.startswith("plof_") and feat.endswith("_max_beta"):
         organ = feat[len("plof_"):-len("_max_beta")].replace("_", " ").title()
         return f"pLoF: {organ} |\u03b2|"
