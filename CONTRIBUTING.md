@@ -309,20 +309,15 @@ frontend/src/
 │   │   ├── SequenceInput.tsx       # Multi-type form (antibody/nanobody/peptide)
 │   │   └── JobProgress.tsx         # 3-step progress stepper with polling
 │   │
-│   └── ui/                         # shadcn/ui primitives (13 components)
+│   └── ui/                         # shadcn/ui primitives (8 components, the ones that the pages use)
 │       ├── button.tsx
 │       ├── card.tsx
 │       ├── input.tsx
 │       ├── badge.tsx
-│       ├── table.tsx
 │       ├── tabs.tsx
-│       ├── tooltip.tsx
 │       ├── separator.tsx
 │       ├── dialog.tsx
-│       ├── popover.tsx
-│       ├── scroll-area.tsx
-│       ├── skeleton.tsx
-│       └── command.tsx
+│       └── skeleton.tsx
 │
 └── app/                            # Next.js App Router pages
     ├── layout.tsx                  # Root layout: sidebar + header + main
